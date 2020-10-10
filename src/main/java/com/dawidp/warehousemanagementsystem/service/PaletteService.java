@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawidp.warehousemanagementsystem.dao.PaletteRepository;
-import com.dawidp.warehousemanagementsystem.domain.Palette;
+import com.dawidp.warehousemanagementsystem.model.Palette;
 
 @Service
 public class PaletteService {

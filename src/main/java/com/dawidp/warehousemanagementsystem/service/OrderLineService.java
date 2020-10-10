@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawidp.warehousemanagementsystem.dao.LineRepository;
-import com.dawidp.warehousemanagementsystem.domain.OrderLine;
+import com.dawidp.warehousemanagementsystem.model.OrderLine;
 
 @Service
 public class OrderLineService {

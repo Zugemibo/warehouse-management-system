@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawidp.warehousemanagementsystem.dao.SupplyRepository;
-import com.dawidp.warehousemanagementsystem.domain.NewSupply;
+import com.dawidp.warehousemanagementsystem.model.NewSupply;
 
 @Service
 public class SupplyService {

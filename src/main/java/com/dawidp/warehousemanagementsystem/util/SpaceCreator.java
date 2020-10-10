@@ -8,13 +8,6 @@ import lombok.Data;
 @Data
 public class SpaceCreator {
 
-	/* 
-	 * public static void main(String[] args) {
-	 * System.out.println(createSinglePaletteSpace(5, 10, 4));
-	 * 
-	 * }
-	 */
-
 	public static List<String> createSinglePaletteSpace(int alley, int rack, int height) {
 		String code = null;
 		

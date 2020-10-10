@@ -1,12 +1,9 @@
-package com.dawidp.warehousemanagementsystem.domain;
+package com.dawidp.warehousemanagementsystem.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,18 +15,17 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
-
+@NoArgsConstructor
+public class Supplier {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id", nullable = false)
-	private int customerId;
-	@Column(name = "first_name")
-	private String firstName;
-	@Column(name = "last_name")
-	private String lastName;
+	@Column(name = "supplier_id", nullable = false)
+	private int supplierId;
+	@Column(name = "company_name")
+	private String companyName;
+	@Column(name = "nip_number")
+	private String nipNumber;
 	private String street;
 	private String city;
 	@Column(name = "zip_code")
@@ -37,6 +33,7 @@ public class Customer {
 	private String email;
 	@Column(name = "phone_number")
 	private String phoneNumber;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-	private List<Order> orderList = new ArrayList<Order>();
+	@OneToMany(mappedBy = "supplier")
+	private List<NewSupply> supplyList;
+
 }

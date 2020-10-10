@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawidp.warehousemanagementsystem.domain.Palette;
-import com.dawidp.warehousemanagementsystem.domain.SinglePaletteSpace;
+import com.dawidp.warehousemanagementsystem.model.Palette;
+import com.dawidp.warehousemanagementsystem.model.SinglePaletteSpace;
 import com.dawidp.warehousemanagementsystem.service.PaletteService;
 import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 import com.dawidp.warehousemanagementsystem.util.BarcodeGenerator;

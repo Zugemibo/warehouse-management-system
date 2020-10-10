@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawidp.warehousemanagementsystem.domain.Order;
-import com.dawidp.warehousemanagementsystem.domain.OrderLine;
-import com.dawidp.warehousemanagementsystem.domain.Product;
+import com.dawidp.warehousemanagementsystem.model.Order;
+import com.dawidp.warehousemanagementsystem.model.OrderLine;
+import com.dawidp.warehousemanagementsystem.model.Product;
 import com.dawidp.warehousemanagementsystem.service.OrderLineService;
 import com.dawidp.warehousemanagementsystem.service.OrderService;
 import com.dawidp.warehousemanagementsystem.service.ProductService;

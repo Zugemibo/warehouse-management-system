@@ -1,4 +1,4 @@
-package com.dawidp.warehousemanagementsystem.domain;
+package com.dawidp.warehousemanagementsystem.model;
 
 import java.time.LocalDateTime;
 import java.util.List;

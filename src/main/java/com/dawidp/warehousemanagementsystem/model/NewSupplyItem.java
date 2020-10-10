@@ -1,4 +1,4 @@
-package com.dawidp.warehousemanagementsystem.domain;
+package com.dawidp.warehousemanagementsystem.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

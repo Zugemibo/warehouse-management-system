@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawidp.warehousemanagementsystem.dao.OrderRepository;
-import com.dawidp.warehousemanagementsystem.domain.Order;
+import com.dawidp.warehousemanagementsystem.model.Order;
 
 @Service
 public class OrderService {
