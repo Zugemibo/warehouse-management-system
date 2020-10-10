@@ -22,7 +22,7 @@ public class SupplierService {
     }
 
     public Supplier findSupplierById(Long id) {
-        return supplierRepository.findSupplierById(id);
+        return supplierRepository.findSupplierBySupplierId(id);
     }
 
     public void removeSupplier(Long id) {
