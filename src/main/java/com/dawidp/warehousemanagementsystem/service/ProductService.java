@@ -34,7 +34,7 @@ public class ProductService {
         return repository.findProductByName(name);
     }
 
-    public Product getProductByCode(int code) {
+    public Product getProductByCode(String code) {
         return repository.findProductByBarCode(code);
     }
     /*public void moveProduct(String firstPalette, String productCode, String secondPalette) {

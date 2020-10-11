@@ -1,13 +1,8 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class NewSupplyItem {
+public class SupplyItem {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +21,7 @@ public class NewSupplyItem {
     @JoinColumn(name = "product_id")
 	private Product product;
 	private int amount;
-	@ManyToOne
-	@JoinColumn(name="supplyId")
-	private NewSupply newSupply;
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Supply supply;
 }

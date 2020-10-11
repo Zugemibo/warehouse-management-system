@@ -36,6 +36,6 @@ public class Supplier {
 	private String phoneNumber;
 	@JsonBackReference
 	@OneToMany(mappedBy = "supplier")
-	private List<NewSupply> supplyList;
+	private List<Supply> supplyList;
 
 }

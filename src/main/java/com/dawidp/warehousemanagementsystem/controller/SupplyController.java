@@ -1,7 +1,9 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
 import com.dawidp.warehousemanagementsystem.model.Supplier;
+import com.dawidp.warehousemanagementsystem.service.ProductService;
 import com.dawidp.warehousemanagementsystem.service.SupplierService;
+import com.dawidp.warehousemanagementsystem.service.SupplyItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawidp.warehousemanagementsystem.model.NewSupply;
-import com.dawidp.warehousemanagementsystem.model.NewSupplyItem;
+import com.dawidp.warehousemanagementsystem.model.Supply;
+import com.dawidp.warehousemanagementsystem.model.SupplyItem;
 import com.dawidp.warehousemanagementsystem.service.SupplyService;
 
 import java.util.List;
@@ -26,20 +28,24 @@ public class SupplyController {
 	SupplyService supplyService;
 	@Autowired
 	SupplierService supplierService;
+	@Autowired
+    SupplyItemService supplyItemService;
+	@Autowired
+    ProductService productService;
 
 	@PostMapping("/addSupply")
-	public NewSupply addSupply() {
-		return supplyService.save(new NewSupply());
+	public Supply addSupply() {
+		return supplyService.save(new Supply());
 	}
 
 	@PutMapping("/supply")
-	public NewSupply changeSupply(@RequestBody NewSupply newSupply) {
-		return supplyService.save(newSupply);
+	public Supply changeSupply(@RequestBody Supply supply) {
+		return supplyService.save(supply);
 	}
 
 	@GetMapping("/supply/{supplyId}")
-	public NewSupply getSupply(@PathVariable int supplyId) {
-		return supplyService.findNewSupplyBySupplyId(supplyId);
+	public Supply getSupply(@PathVariable int supplyId) {
+		return supplyService.findSupplyBySupplyId(supplyId);
 	}
 
 	@DeleteMapping("/supply/{supplyId}")
@@ -48,8 +54,10 @@ public class SupplyController {
 	}
 
 	@PostMapping("/supply/{supplyId}/line/")
-	public NewSupply addSupply(@PathVariable int supplyId, @RequestBody NewSupplyItem item) {
-		NewSupply supply = supplyService.findNewSupplyBySupplyId(supplyId);
+	public Supply addSupply(@PathVariable int supplyId, @RequestBody SupplyItem item) {
+		Supply supply = supplyService.findSupplyBySupplyId(supplyId);
+		item.setProduct(productService.getProductByCode(item.getProduct().getBarCode()));
+		supplyItemService.save(item);
 		supply.addItem(item);
 		return supplyService.save(supply);
 	}
@@ -69,6 +77,5 @@ public class SupplyController {
 	public void removeSupplier(@PathVariable Long id) {
 		supplierService.removeSupplier(id);
 	}
-
 
 }
