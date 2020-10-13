@@ -3,11 +3,7 @@ package com.dawidp.warehousemanagementsystem.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,7 +30,7 @@ public class Product {
     private int sizeLength;
     private int sizeWidth;
     private int sizeDepth;
-    private double weight;
+    private int weight;
     @NotNull(message = "Please enter an amount.")
     private long stock;
     @NotNull(message = "Please provide retail price.")

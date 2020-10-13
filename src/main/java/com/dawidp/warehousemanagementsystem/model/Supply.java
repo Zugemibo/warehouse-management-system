@@ -22,7 +22,7 @@ public class Supply {
 	@Column(name = "supply_id", nullable = false)
 	private int supplyId;
 	private String supplyNumber;
-	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
 	private List<SupplyItem> supplyItem;
 	@ManyToOne
 	@JoinColumn(name = "supplierId")

@@ -18,6 +18,7 @@ import com.dawidp.warehousemanagementsystem.model.Supply;
 import com.dawidp.warehousemanagementsystem.model.SupplyItem;
 import com.dawidp.warehousemanagementsystem.service.SupplyService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,7 @@ public class SupplyController {
 
 	@PutMapping("/supply")
 	public Supply changeSupply(@RequestBody Supply supply) {
+		supply.setAdded(LocalDateTime.now());
 		return supplyService.save(supply);
 	}
 

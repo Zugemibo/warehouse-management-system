@@ -12,6 +12,7 @@ public class SupplyItemService {
     SupplyItemRepository supplyItemRepository;
 
     public SupplyItem save(SupplyItem item) {
+        item.getProduct().setStock(item.getAmount());
         return supplyItemRepository.save(item);
     }
 }
