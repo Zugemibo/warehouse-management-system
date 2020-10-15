@@ -18,7 +18,7 @@ public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_Id", nullable = false)
-	private int customerId;
+	private Long customerId;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Address address;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)

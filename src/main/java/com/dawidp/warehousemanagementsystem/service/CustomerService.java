@@ -16,7 +16,7 @@ public class CustomerService {
 		return repository.save(customer);
 	}
 
-	public Customer getCustomer(int customerId) {
+	public Customer getCustomer(Long customerId) {
 		return repository.findCustomerByCustomerId(customerId);
 	}
 
