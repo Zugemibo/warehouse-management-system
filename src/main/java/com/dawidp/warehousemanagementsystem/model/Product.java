@@ -1,6 +1,7 @@
 package com.dawidp.warehousemanagementsystem.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -34,13 +35,20 @@ public class Product {
     private int sizeWidth;
     private int sizeDepth;
     private int weight;
-    @NotNull(message = "Please enter an amount.")
-    private long stock;
-    @NotNull(message = "Please provide retail price.")
-    private double priceRetail;
-    @NotNull(message = "Please provide wholesale price.")
-    private double priceWholeSale;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private ProductStock stock;
+    @NotNull(message = "Please provide price.")
+    private double price;
     private String description;
-	@CreationTimestamp
-	private LocalDateTime added;
+    @CreationTimestamp
+    private LocalDateTime added;
+    @OneToMany
+    @Column(name = "storage_places")
+    @JoinColumn(name = "palette_barcode")
+    private List<StorageLocationProductMapper> storages;
+
+
+    public void setStockAvailable(Long quantity) {
+        this.getStock().setStockAvailable(quantity);
+    }
 }

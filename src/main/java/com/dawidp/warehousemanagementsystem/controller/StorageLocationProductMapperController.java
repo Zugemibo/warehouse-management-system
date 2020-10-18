@@ -1,6 +1,10 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
+import com.dawidp.warehousemanagementsystem.model.Palette;
+import com.dawidp.warehousemanagementsystem.model.Product;
 import com.dawidp.warehousemanagementsystem.model.StorageLocationProductMapper;
+import com.dawidp.warehousemanagementsystem.service.PaletteService;
+import com.dawidp.warehousemanagementsystem.service.ProductService;
 import com.dawidp.warehousemanagementsystem.service.StorageLocationProductMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +16,18 @@ import java.util.List;
 public class StorageLocationProductMapperController {
 
     @Autowired
-    StorageLocationProductMapperService locationService;
+    private StorageLocationProductMapperService locationService;
+    @Autowired
+    private PaletteService paletteService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/moveFromSupply")
-    public String moveFromSupply(@RequestBody StorageLocationProductMapper location){
-        locationService.save(location);
-        return "Product with barcode " + location.getProduct() + " has been moved to " + location.getPalette() + " with quantity " + location.getQuantity();
+    public String moveFromSupply(@PathVariable String paletteBarcode, @PathVariable String productBarcode, @PathVariable int quantity){
+        Palette palette = paletteService.getPalleteByBarcode(paletteBarcode);
+        Product product = productService.getProductByCode(productBarcode);
+        locationService.save(new StorageLocationProductMapper(palette,product,quantity));
+        return "Product with barcode " + product.getBarCode() + " has been moved to " + palette.getPaletteBarcode() + " with quantity " + quantity;
     }
     @GetMapping("/getLocation/{locationId}")
     public StorageLocationProductMapper getLocation(@PathVariable StorageLocationProductMapper locationId){

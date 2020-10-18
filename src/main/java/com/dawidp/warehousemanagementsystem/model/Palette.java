@@ -26,6 +26,9 @@ public class Palette {
 	@Column(name = "palette_barcode")
 	@NaturalId
 	private String paletteBarcode;
+	@OneToMany
+	@Column(name = "storage_places")
+	private List<StorageLocationProductMapper> storages;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private MultiPaletteSpace multiPaletteSpace;
 	@OneToOne

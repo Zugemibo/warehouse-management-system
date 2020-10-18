@@ -25,5 +25,9 @@ public class StorageLocationProductMapper {
     @JoinColumn(name = "product_barcode")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Product product;
-    private int quantity;
+
+    public StorageLocationProductMapper(Palette palette, Product product) {
+        this.palette = palette;
+        this.product = product;
+    }
 }
