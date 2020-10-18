@@ -1,7 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,9 +23,13 @@ public class Product {
     private int productId;
     @NotNull(message = "Please provide EAN.")
     @NaturalId
+    @Column(name = "product_barcode")
     private String barCode;
     @NotNull(message = "Please provide product name.")
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "category_name")
+    private Category category;
     private int sizeLength;
     private int sizeWidth;
     private int sizeDepth;
@@ -40,7 +43,4 @@ public class Product {
     private String description;
 	@CreationTimestamp
 	private LocalDateTime added;
-    @ManyToMany(mappedBy = "productList")
-    private List<Palette> paletteList;
-
 }

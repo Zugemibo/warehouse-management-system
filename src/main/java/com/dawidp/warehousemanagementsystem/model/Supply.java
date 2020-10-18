@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +26,8 @@ public class Supply {
 	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
 	private List<SupplyItem> supplyItem;
 	@ManyToOne
-	@JoinColumn(name = "supplierId")
+	@JoinColumn(name = "supplier_Id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Supplier supplier;
 	@CreationTimestamp
 	private LocalDateTime added;

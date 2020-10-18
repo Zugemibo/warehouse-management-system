@@ -58,6 +58,8 @@ public class PaletteController {
 		SinglePaletteSpace space = spaceService.getSinglePaletteSpaceByBarcode(spaceCode);
 		Palette palette = service.getPalleteByBarcode(paletteBarcode);
 		palette.setSinglePaletteSpace(space);
+		space.setPalette(palette);
+		spaceService.save(space);
 		return service.save(palette);
 	}
 	@PutMapping("/removePalette/{paletteBarcode}")
