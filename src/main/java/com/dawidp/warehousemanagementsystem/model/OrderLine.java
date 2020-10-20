@@ -12,7 +12,6 @@ import javax.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -33,11 +32,11 @@ public class OrderLine{
     private double totalPrice;
 
     @Transient
-    public int calculateVolume(){
-        return product.getSizeDepth()*product.getSizeLength()*product.getSizeWidth();
+    public double calculateVolume(){
+        return product.calculateVolume();
     }
     @Transient
-    public int getWeight(){
+    public double getWeight(){
         return product.getWeight();
     }
 }

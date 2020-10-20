@@ -31,14 +31,13 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_name")
     private Category category;
-    private int sizeLength;
-    private int sizeWidth;
-    private int sizeDepth;
-    private int weight;
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    private ProductStock stock;
+    private Measurement measurement;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private Stock stock;
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @NotNull(message = "Please provide price.")
-    private double price;
+    private Price price;
     private String description;
     @CreationTimestamp
     private LocalDateTime added;
@@ -50,5 +49,17 @@ public class Product {
 
     public void setStockAvailable(Long quantity) {
         this.getStock().setStockAvailable(quantity);
+    }
+    public void setStockArrived(Long quantity) {
+        this.getStock().setStockArrived(quantity);
+    }
+
+    public double calculateVolume(){
+        double volume = this.measurement.getLength()*this.measurement.getWidth()*this.measurement.getHeight();
+        return volume;
+    }
+
+    public double getWeight(){
+        return this.measurement.getWeight();
     }
 }

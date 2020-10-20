@@ -22,13 +22,13 @@ public class StorageLocationProductMapperController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/moveFromSupply")
-    public String moveFromSupply(@PathVariable String paletteBarcode, @PathVariable String productBarcode, @PathVariable int quantity){
-        Palette palette = paletteService.getPalleteByBarcode(paletteBarcode);
-        Product product = productService.getProductByCode(productBarcode);
-        locationService.save(new StorageLocationProductMapper(palette,product,quantity));
-        return "Product with barcode " + product.getBarCode() + " has been moved to " + palette.getPaletteBarcode() + " with quantity " + quantity;
-    }
+//    @PostMapping("/moveFromSupply")
+//    public String moveFromSupply(@PathVariable String paletteBarcode, @PathVariable String productBarcode, @PathVariable int quantity){
+//        Palette palette = paletteService.getPalleteByBarcode(paletteBarcode);
+//        Product product = productService.getProductByCode(productBarcode);
+//        locationService.save(new StorageLocationProductMapper(palette,product,quantity));
+//        return "Product with barcode " + product.getBarCode() + " has been moved to " + palette.getPaletteBarcode() + " with quantity " + quantity;
+//    }
     @GetMapping("/getLocation/{locationId}")
     public StorageLocationProductMapper getLocation(@PathVariable StorageLocationProductMapper locationId){
         return locationService.getLocationById(locationId);
