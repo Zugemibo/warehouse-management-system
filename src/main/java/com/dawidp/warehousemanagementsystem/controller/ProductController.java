@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.dawidp.warehousemanagementsystem.model.Measurement;
+import com.dawidp.warehousemanagementsystem.model.Price;
+import com.dawidp.warehousemanagementsystem.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +63,24 @@ public class ProductController {
     @DeleteMapping("/deleteProduct/{id}")
     public void deleteProduct(@PathVariable int id) {
         service.delete(id);
+    }
+
+    @PostMapping("/{productBarcode}/addMeasurement")
+    public Product addMeasurement(@RequestBody Measurement measurement, @PathVariable String productBarcode){
+        Product product = service.getProductByCode(productBarcode);
+        product.addMeasurement(measurement);
+        return service.save(product);
+    }
+    @PostMapping("/{productBarcode}/addStock")
+    public Product addStock(@RequestBody Stock stock, @PathVariable String productBarcode){
+        Product product = service.getProductByCode(productBarcode);
+        product.addStock(stock);
+        return service.save(product);
+    }
+    @PostMapping("/{productBarcode}/addPrice")
+    public Product addStock(@RequestBody Price price, @PathVariable String productBarcode){
+        Product product = service.getProductByCode(productBarcode);
+        product.addPrice(price);
+        return service.save(product);
     }
 }

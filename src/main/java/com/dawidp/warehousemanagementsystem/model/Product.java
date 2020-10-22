@@ -51,7 +51,8 @@ public class Product {
         this.getStock().setStockAvailable(quantity);
     }
     public void setStockArrived(Long quantity) {
-        this.getStock().setStockArrived(quantity);
+        this.getStock()
+                .setStockArrived(this.getStock().getStockArrived() + quantity);
     }
 
     public double calculateVolume(){
@@ -61,5 +62,20 @@ public class Product {
 
     public double getWeight(){
         return this.measurement.getWeight();
+    }
+
+    public void addMeasurement(Measurement measurement){
+        this.setMeasurement(measurement);
+        measurement.setProduct(this);
+    }
+
+    public void addStock(Stock stock){
+        this.setStock(stock);
+        stock.setProduct(this);
+    }
+
+    public void addPrice(Price price) {
+        this.setPrice(price);
+        price.setProduct(this);
     }
 }
