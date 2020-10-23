@@ -20,15 +20,15 @@ public class SupplyService {
 		return repository.save(supply);
 	}
 
-	public Supply findSupplyBySupplyId(int supplyId) {
+	public Supply findSupplyBySupplyId(Long supplyId) {
 		return repository.findSupplyBySupplyId(supplyId);
 	}
 
-	public void deleteById(int supplyId) {
+	public void deleteById(Long supplyId) {
 		repository.deleteById(supplyId);
 		
 	}
-	public Optional<Supply> findSupply(int supplyId) {
+	public Optional<Supply> findSupply(Long supplyId) {
 		return repository.findById(supplyId);
 	}
 

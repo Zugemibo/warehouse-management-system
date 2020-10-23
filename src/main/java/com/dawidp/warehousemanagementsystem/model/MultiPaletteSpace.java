@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class MultiPaletteSpace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int multiPaletteSpaceId;
+    private Long multiPaletteSpaceId;
     @NotNull
     private String barcode;
     @OneToMany(mappedBy = "multiPaletteSpace", cascade = {CascadeType.REFRESH, CascadeType.MERGE})

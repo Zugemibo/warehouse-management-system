@@ -6,6 +6,7 @@ import com.dawidp.warehousemanagementsystem.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,10 +16,11 @@ public class ProductService {
     ProductRepository repository;
 
     public Product save(Product product) {
+        product.setAdded(LocalDateTime.now());
         return repository.save(product);
     }
 
-    public Product getProductById(int id) {
+    public Product getProductById(Long id) {
         return repository.findProductByProductId(id);
     }
 
@@ -26,7 +28,7 @@ public class ProductService {
         return repository.findAll();
     }
 
-    public void delete(int id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 

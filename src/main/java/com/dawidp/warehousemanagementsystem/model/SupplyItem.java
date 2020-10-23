@@ -17,7 +17,7 @@ public class SupplyItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "supply_item_id", nullable = false)
-	private int supplyItemId;
+	private Long supplyItemId;
     @ManyToOne
     @JoinColumn(name = "product_barcode")
 	private Product product;

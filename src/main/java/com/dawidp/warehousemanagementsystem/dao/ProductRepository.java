@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.dawidp.warehousemanagementsystem.model.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
-    Product findProductByProductId(int id);
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Product findProductByProductId(Long id);
 
     Product findProductByName(String name);
 

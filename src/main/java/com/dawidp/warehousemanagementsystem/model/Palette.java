@@ -22,7 +22,7 @@ import org.hibernate.annotations.NaturalId;
 public class Palette {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int paletteId;
+	private Long paletteId;
 	@Column(name = "palette_barcode")
 	@NaturalId
 	private String paletteBarcode;

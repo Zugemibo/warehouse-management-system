@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dawidp.warehousemanagementsystem.model.SinglePaletteSpace;
 
 @Repository
-public interface SinglePaletteSpaceRepository extends JpaRepository<SinglePaletteSpace, Integer>{
+public interface SinglePaletteSpaceRepository extends JpaRepository<SinglePaletteSpace, Long>{
 
 	SinglePaletteSpace getSinglePaletteSpaceByBarcode(String barcode);
 

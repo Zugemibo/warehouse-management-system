@@ -9,8 +9,8 @@ public class OrderMeasure {
         }
         return volume;
     }
-    public int calculateWeight(Order order){
-        int weight = 0;
+    public double calculateWeight(Order order){
+        double weight = 0;
         for(OrderLine line:order.getLinesItems()){
             weight += (line.getWeight());
         }

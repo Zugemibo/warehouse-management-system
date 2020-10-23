@@ -20,7 +20,7 @@ public class OrderLine{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "line_id", nullable = false)
-    private int orderLineId;
+    private Long orderLineId;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

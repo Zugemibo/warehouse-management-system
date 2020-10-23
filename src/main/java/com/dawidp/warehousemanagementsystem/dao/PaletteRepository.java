@@ -8,7 +8,7 @@ import com.dawidp.warehousemanagementsystem.model.Palette;
 
 @Repository
 @Transactional
-public interface PaletteRepository extends JpaRepository<Palette, Integer> {
+public interface PaletteRepository extends JpaRepository<Palette, Long> {
 
 	Palette getByPaletteBarcode(String paletteBarcode);
 

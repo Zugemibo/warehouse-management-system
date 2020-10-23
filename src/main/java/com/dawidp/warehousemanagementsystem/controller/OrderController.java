@@ -37,7 +37,7 @@ public class OrderController {
 	Date date = new Date(System.currentTimeMillis());
 
 	@GetMapping("/order/{orderId}")
-	public Order getOrderById(@PathVariable("orderId") int orderId) {
+	public Order getOrderById(@PathVariable("orderId") Long orderId) {
 		return service.getOrder(orderId);
 	}
 
@@ -54,7 +54,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/order/{orderId}/lines")
-	public Order addToOrder(@PathVariable("orderId") int orderId, @RequestBody OrderLine line) {
+	public Order addToOrder(@PathVariable("orderId") Long orderId, @RequestBody OrderLine line) {
 		Order order = service.getOrder(orderId);
 		Product product = pservice.getProductById(line.getProduct().getProductId());
 		order.addLine(line);
@@ -62,14 +62,14 @@ public class OrderController {
 	}
 
 	@DeleteMapping("/order/{orderId}/clear")
-	public Order deleteAllLines(@PathVariable("orderId") int orderId) {
+	public Order deleteAllLines(@PathVariable("orderId") Long orderId) {
 		Order order = service.getOrder(orderId);
 		order.removeLines();
 		return service.save(order);
 	}
 
 	@DeleteMapping("/order/{orderId}/lines/{id}")
-	public Order deleteFromOrder(@PathVariable("orderId") int orderId, @PathVariable("id") int id) {
+	public Order deleteFromOrder(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id) {
 		Order order = service.getOrder(orderId);
 		OrderLine line = lservice.getOrderLine(id);
 		order.removeLine(line);
@@ -77,7 +77,7 @@ public class OrderController {
 	}
 
 	@DeleteMapping("/order/{orderId}/cancel-order")
-	public void deleteOrderById(@PathVariable("orderId") int orderId) {
+	public void deleteOrderById(@PathVariable("orderId") Long orderId) {
 		service.deleteOrderById(orderId);
 	}
 

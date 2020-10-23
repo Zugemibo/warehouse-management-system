@@ -21,7 +21,7 @@ public class Supply {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "supply_id", nullable = false)
-	private int supplyId;
+	private Long supplyId;
 	private String supplyNumber;
 	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
 	private List<SupplyItem> supplyItem;

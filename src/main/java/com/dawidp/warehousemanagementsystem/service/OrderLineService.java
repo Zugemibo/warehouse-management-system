@@ -12,7 +12,7 @@ public class OrderLineService {
 	@Autowired
 	LineRepository repository;
 
-	public OrderLine getOrderLine(int id) {
+	public OrderLine getOrderLine(Long id) {
 		return repository.findOrderLineByOrderLineId(id);
 	}
 

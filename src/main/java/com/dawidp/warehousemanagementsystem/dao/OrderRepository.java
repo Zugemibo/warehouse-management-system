@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.dawidp.warehousemanagementsystem.model.Order;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-	Order findOrderByOrderId(int orderId);
+	Order findOrderByOrderId(Long orderId);
 }

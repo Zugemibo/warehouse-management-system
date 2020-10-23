@@ -4,9 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.dawidp.warehousemanagementsystem.model.Measurement;
-import com.dawidp.warehousemanagementsystem.model.Price;
-import com.dawidp.warehousemanagementsystem.model.Stock;
+import com.dawidp.warehousemanagementsystem.model.*;
+import com.dawidp.warehousemanagementsystem.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawidp.warehousemanagementsystem.model.Product;
 import com.dawidp.warehousemanagementsystem.service.ProductService;
 
 @RestController
@@ -27,60 +25,70 @@ import com.dawidp.warehousemanagementsystem.service.ProductService;
 public class ProductController {
 
     @Autowired
-    ProductService service;
+    ProductService productService;
+    @Autowired
+    CategoryService categoryService;
 
     @PostMapping(value = "/createProduct", produces="application/json")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
-        service.save(product);
-        return new ResponseEntity(HttpStatus.CREATED);
+        productService.save(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @GetMapping("/getProductById/{id}")
-    public Product getProductById(@PathVariable int id) {
-        return service.getProductById(id);
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 
     @GetMapping("/getProductByName/{name}")
     public Product getProductByName(@PathVariable String name) {
-        return service.getProductByName(name);
+        return productService.getProductByName(name);
     }
 
     @GetMapping("/getProductByCode/{code}")
     public Product getProductByCode(@PathVariable String code) {
-        return service.getProductByCode(code);
+        return productService.getProductByCode(code);
     }
 
     @GetMapping("/getProducts")
     public List<Product> getProductById() {
-        return service.getProducts();
+        return productService.getProducts();
     }
 
     @PutMapping("/updateProduct")
     public Product updateProduct(@Valid @RequestBody Product product) {
-        return service.save(product);
+        return productService.save(product);
     }
 
     @DeleteMapping("/deleteProduct/{id}")
-    public void deleteProduct(@PathVariable int id) {
-        service.delete(id);
+    public void deleteProduct(@PathVariable Long id) {
+        productService.delete(id);
     }
 
     @PostMapping("/{productBarcode}/addMeasurement")
     public Product addMeasurement(@RequestBody Measurement measurement, @PathVariable String productBarcode){
-        Product product = service.getProductByCode(productBarcode);
+        Product product = productService.getProductByCode(productBarcode);
         product.addMeasurement(measurement);
-        return service.save(product);
+        return productService.save(product);
     }
     @PostMapping("/{productBarcode}/addStock")
     public Product addStock(@RequestBody Stock stock, @PathVariable String productBarcode){
-        Product product = service.getProductByCode(productBarcode);
+        Product product = productService.getProductByCode(productBarcode);
+        stock.setStockId(product.getProductId());
         product.addStock(stock);
-        return service.save(product);
+        return productService.save(product);
     }
     @PostMapping("/{productBarcode}/addPrice")
     public Product addStock(@RequestBody Price price, @PathVariable String productBarcode){
-        Product product = service.getProductByCode(productBarcode);
+        Product product = productService.getProductByCode(productBarcode);
         product.addPrice(price);
-        return service.save(product);
+        return productService.save(product);
+    }
+    @PutMapping("/{productBarcode}/addCategory/{categoryName}")
+    public Product addCategory(@PathVariable String productBarcode, @PathVariable String categoryName){
+        Category category = categoryService.findCategoryByName(categoryName);
+        Product product = productService.getProductByCode(productBarcode);
+        product.setCategory(category);
+        return productService.save(product);
     }
 }

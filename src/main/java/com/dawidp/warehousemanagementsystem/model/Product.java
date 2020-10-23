@@ -21,7 +21,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private Long productId;
     @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
@@ -36,7 +36,6 @@ public class Product {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Stock stock;
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @NotNull(message = "Please provide price.")
     private Price price;
     private String description;
     @CreationTimestamp
@@ -61,7 +60,10 @@ public class Product {
     }
 
     public double getWeight(){
-        return this.measurement.getWeight();
+        if(this.measurement == null) {
+            return 0;
+        }
+        else return this.measurement.getWeight();
     }
 
     public void addMeasurement(Measurement measurement){

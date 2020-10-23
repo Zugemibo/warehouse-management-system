@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.dawidp.warehousemanagementsystem.model.OrderLine;
 
 @Repository
-public interface LineRepository extends JpaRepository<OrderLine, Integer> {
+public interface LineRepository extends JpaRepository<OrderLine, Long> {
 
-	OrderLine findOrderLineByOrderLineId(int id);
-	OrderLine deleteOrderLineByOrderLineId(int id);
+	OrderLine findOrderLineByOrderLineId(Long id);
+	OrderLine deleteOrderLineByOrderLineId(Long id);
 }

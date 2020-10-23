@@ -46,17 +46,17 @@ public class SupplyController {
 	}
 
 	@GetMapping("/supply/{supplyId}")
-	public Supply getSupply(@PathVariable int supplyId) {
+	public Supply getSupply(@PathVariable Long supplyId) {
 		return supplyService.findSupplyBySupplyId(supplyId);
 	}
 
 	@DeleteMapping("/supply/{supplyId}")
-	public void deleteSupply(@PathVariable int supplyId) {
+	public void deleteSupply(@PathVariable Long supplyId) {
 		supplyService.deleteById(supplyId);
 	}
 
 	@PostMapping("/supply/{supplyId}/line/")
-	public Supply addSupply(@PathVariable int supplyId, @RequestBody SupplyItem item) {
+	public Supply addSupply(@PathVariable Long supplyId, @RequestBody SupplyItem item) {
 		Supply supply = supplyService.findSupplyBySupplyId(supplyId);
 		item.setProduct(productService.getProductByCode(item.getProduct().getBarCode()));
 		supplyItemService.save(item);

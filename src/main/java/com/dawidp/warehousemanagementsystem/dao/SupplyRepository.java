@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.dawidp.warehousemanagementsystem.model.Supply;
 
 @Repository
-public interface SupplyRepository extends JpaRepository<Supply, Integer>{
+public interface SupplyRepository extends JpaRepository<Supply, Long>{
 
-	Supply findSupplyBySupplyId(int supplyId);
+	Supply findSupplyBySupplyId(Long supplyId);
 
 }

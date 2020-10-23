@@ -18,10 +18,12 @@ public class CategoryController {
     public Category addCategory(@RequestBody Category category){
         return service.save(category);
     }
+
     @GetMapping("")
     public List<Category> getCategories(){
         return service.findAll();
     }
+
     @GetMapping("/{categoryName}")
     public Category getCategoryByName(@PathVariable String categoryName){
         return service.findCategoryByName(categoryName);

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class SinglePaletteSpace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int singlePaletteSpaceId;
+    private Long singlePaletteSpaceId;
     @NotNull
     private String barcode;
     @OneToOne(mappedBy = "singlePaletteSpace", cascade = CascadeType.ALL)
