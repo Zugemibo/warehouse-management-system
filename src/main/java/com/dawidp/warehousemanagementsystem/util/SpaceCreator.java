@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class SpaceCreator {
 
-	public static List<String> createSinglePaletteSpace(int alley, int rack, int height) {
+	public static List<String> createPaletteSpace(int alley, int rack, int height) {
 		String code = null;
 		
 		List<String> spaceList = new ArrayList<String>();

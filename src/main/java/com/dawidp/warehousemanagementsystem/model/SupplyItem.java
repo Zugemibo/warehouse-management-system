@@ -21,7 +21,7 @@ public class SupplyItem {
     @ManyToOne
     @JoinColumn(name = "product_barcode")
 	private Product product;
-	private Long amount;
+	private double amount;
 	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,10 @@ public class Price {
     private double wholesalePrice;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JsonBackReference
     private Product product;
+
+    public Price(Long priceId) {
+        this.priceId = priceId;
+    }
 }

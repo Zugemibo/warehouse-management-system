@@ -2,29 +2,33 @@ package com.dawidp.warehousemanagementsystem.service;
 
 import java.util.List;
 
+import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dawidp.warehousemanagementsystem.dao.SinglePaletteSpaceRepository;
-import com.dawidp.warehousemanagementsystem.model.SinglePaletteSpace;
+import com.dawidp.warehousemanagementsystem.dao.PaletteSpaceRepository;
 
 @Service
 public class PaletteSpaceService {
 	
 	@Autowired
-	SinglePaletteSpaceRepository singleRepository;
+	PaletteSpaceRepository paletteSpaceRepository;
 
-	public void save(SinglePaletteSpace paletteSpace) {
-		singleRepository.save(paletteSpace);
+	public void save(PaletteSpace paletteSpace) {
+		paletteSpaceRepository.save(paletteSpace);
 		
 	}
+	public PaletteSpace saveSingle(PaletteSpace paletteSpace) {
+		return paletteSpaceRepository.save(paletteSpace);
 
-	public List<SinglePaletteSpace> findAll() {
-		return singleRepository.findAll();
 	}
 
-	public SinglePaletteSpace getSinglePaletteSpaceByBarcode(String barcode) {
-		return singleRepository.getSinglePaletteSpaceByBarcode(barcode);
+	public List<PaletteSpace> findAll() {
+		return paletteSpaceRepository.findAll();
+	}
+
+	public PaletteSpace getPaletteSpaceByBarcode(String barcode) {
+		return paletteSpaceRepository.getSinglePaletteSpaceByBarcode(barcode);
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dawidp.warehousemanagementsystem.util.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 
@@ -25,19 +27,26 @@ public class Product {
     @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
-    private String barCode;
+    @JsonView(Views.Normal.class)
+    private String barcode;
     @NotNull(message = "Please provide product name.")
+    @JsonView(Views.Normal.class)
     private String name;
     @ManyToOne
     @JoinColumn(name = "category_name")
     private Category category;
+    @JsonView(Views.ProductDetailedView.class)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Measurement measurement;
+    @JsonView(Views.ProductDetailedView.class)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Stock stock;
+    @JsonView(Views.ProductDetailedView.class)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Price price;
+    @JsonView(Views.ProductDetailedView.class)
     private String description;
+    @JsonView(Views.ProductDetailedView.class)
     @CreationTimestamp
     private LocalDateTime added;
     @OneToMany
@@ -46,12 +55,18 @@ public class Product {
     private List<StorageLocationProductMapper> storages;
 
 
-    public void setStockAvailable(Long quantity) {
+    public void setStockAvailable(double quantity) {
         this.getStock().setStockAvailable(quantity);
     }
-    public void setStockArrived(Long quantity) {
+    public double getStockAvailable(){
+        return this.getStock().getStockAvailable();
+    }
+    public void setStockArrived(double quantity) {
         this.getStock()
-                .setStockArrived(this.getStock().getStockArrived() + quantity);
+                .setStockArrived(quantity);
+    }
+    public double getStockArrived(){
+        return this.getStock().getStockArrived();
     }
 
     public double calculateVolume(){

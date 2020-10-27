@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,18 @@ public class Stock {
     @Id
     @Column(name = "stock_id")
     private Long stockId;
-    @NaturalId
     @Column(name = "stock_available")
-    private Long stockAvailable;
+    private double stockAvailable;
     @Column(name = "stock_reserved")
-    private Long stockReserved;
+    private double stockReserved;
     @Column(name = "stock_arrived")
-    private Long stockArrived;
+    private double stockArrived;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JsonBackReference
     private Product product;
+
+    public Stock(Long stockId) {
+        this.stockId = stockId;
+    }
 }

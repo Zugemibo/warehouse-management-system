@@ -1,9 +1,9 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import com.dawidp.warehousemanagementsystem.model.Palette;
+import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
 import com.dawidp.warehousemanagementsystem.model.Product;
 import com.dawidp.warehousemanagementsystem.model.StorageLocationProductMapper;
-import com.dawidp.warehousemanagementsystem.service.PaletteService;
+import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 import com.dawidp.warehousemanagementsystem.service.ProductService;
 import com.dawidp.warehousemanagementsystem.service.StorageLocationProductMapperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,10 @@ public class StorageLocationProductMapperController {
     @Autowired
     private StorageLocationProductMapperService locationService;
     @Autowired
-    private PaletteService paletteService;
-    @Autowired
     private ProductService productService;
+    @Autowired
+    private PaletteSpaceService paletteSpaceService;
 
-//    @PostMapping("/moveFromSupply")
-//    public String moveFromSupply(@PathVariable String paletteBarcode, @PathVariable String productBarcode, @PathVariable int quantity){
-//        Palette palette = paletteService.getPalleteByBarcode(paletteBarcode);
-//        Product product = productService.getProductByCode(productBarcode);
-//        locationService.save(new StorageLocationProductMapper(palette,product,quantity));
-//        return "Product with barcode " + product.getBarCode() + " has been moved to " + palette.getPaletteBarcode() + " with quantity " + quantity;
-//    }
     @GetMapping("/getLocation/{locationId}")
     public StorageLocationProductMapper getLocation(@PathVariable StorageLocationProductMapper locationId){
         return locationService.getLocationById(locationId);
@@ -36,5 +29,26 @@ public class StorageLocationProductMapperController {
     @GetMapping("/getLocation")
     public List<StorageLocationProductMapper> getStorages(){
         return locationService.findAll();
+    }
+
+    @PostMapping("/moveProductFromArrival/{what}/{quantity}/{where}")
+    public String moveProductFromArrival(@PathVariable String what, @PathVariable double quantity, @PathVariable String where){
+        Product product = productService.getProductByCode(what);
+        PaletteSpace spaceWhere = paletteSpaceService.getPaletteSpaceByBarcode(where);
+        if(product.getStockArrived()>=quantity){
+            product.setStockArrived(product.getStockArrived()-quantity);
+            product.setStockAvailable(product.getStockAvailable()+quantity);
+            if(spaceWhere.getStorages().contains(product)){
+                StorageLocationProductMapper storage = (StorageLocationProductMapper) spaceWhere.getStorages().stream().filter(s -> s.getProduct().getBarcode()==what);
+                storage.setQuantity(storage.getQuantity()+quantity);
+                locationService.save(storage);
+            }
+            else {
+                StorageLocationProductMapper storage = new StorageLocationProductMapper(product, quantity, spaceWhere);
+                locationService.save(storage);
+            }
+            return "Product with code: " + product.getBarcode() + " has been moved to: " + spaceWhere.getBarcode() + " with quantity:" + quantity;
+        }
+        else return "There are not enough stock.";
     }
 }

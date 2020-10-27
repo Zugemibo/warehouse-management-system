@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,11 @@ public class Measurement {
     private Unit unit;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JsonBackReference
     private Product product;
+
+    public Measurement(Long measurementId) {
+        this.measurementId = measurementId;
+        this.unit = Unit.pcs;
+    }
 }

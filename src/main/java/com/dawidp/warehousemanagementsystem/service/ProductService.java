@@ -37,7 +37,7 @@ public class ProductService {
     }
 
     public Product getProductByCode(String code) {
-        return repository.findProductByBarCode(code);
+        return repository.findProductByBarcode(code);
     }
     /*public void moveProduct(String firstPalette, String productCode, String secondPalette) {
     	

@@ -32,6 +32,13 @@ public class ProductController {
     @PostMapping(value = "/createProduct", produces="application/json")
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
         productService.save(product);
+        Price price = new Price(product.getProductId());
+        Measurement measurement = new Measurement(product.getProductId());
+        Stock stock = new Stock(product.getProductId());
+        product.addPrice(price);
+        product.addMeasurement(measurement);
+        product.addStock(stock);
+        productService.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
@@ -65,22 +72,23 @@ public class ProductController {
         productService.delete(id);
     }
 
-    @PostMapping("/{productBarcode}/addMeasurement")
+    @PostMapping("/{productBarcode}/addMeasure")
     public Product addMeasurement(@RequestBody Measurement measurement, @PathVariable String productBarcode){
         Product product = productService.getProductByCode(productBarcode);
+        measurement.setMeasurementId(product.getProductId());
         product.addMeasurement(measurement);
         return productService.save(product);
     }
-    @PostMapping("/{productBarcode}/addStock")
-    public Product addStock(@RequestBody Stock stock, @PathVariable String productBarcode){
+    @PostMapping("/{productBarcode}/addStock/{quantity}")
+    public Product addStock(@PathVariable double quantity, @PathVariable String productBarcode){
         Product product = productService.getProductByCode(productBarcode);
-        stock.setStockId(product.getProductId());
-        product.addStock(stock);
+        product.setStockArrived(quantity);
         return productService.save(product);
     }
     @PostMapping("/{productBarcode}/addPrice")
     public Product addStock(@RequestBody Price price, @PathVariable String productBarcode){
         Product product = productService.getProductByCode(productBarcode);
+        price.setPriceId(product.getProductId());
         product.addPrice(price);
         return productService.save(product);
     }
