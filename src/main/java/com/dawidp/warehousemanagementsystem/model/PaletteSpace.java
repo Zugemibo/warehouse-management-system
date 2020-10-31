@@ -1,17 +1,15 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import com.dawidp.warehousemanagementsystem.util.Views;
-import com.fasterxml.jackson.annotation.*;
-
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
-import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,21 +21,11 @@ public class PaletteSpace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paletteSpaceId;
     @JsonView(Views.Normal.class)
-    @OneToMany(mappedBy = "paletteSpace")
-    private List<StorageLocationProductMapper> storages;
+    @OneToMany(mappedBy = "space")
+    private Set<StorageLocationProductMapper> storages;
     @NotNull
-    @Column(name="barcode")
+    @Column(name = "barcode")
     @NaturalId
     private String barcode;
-
-    public void addStorage(StorageLocationProductMapper storage){
-        storages.add(storage);
-        storage.setPaletteSpace(this);
-    }
-
-    public void removeStorage(StorageLocationProductMapper storage){
-        storages.remove(storage);
-        storage.setPaletteSpace(null);
-    }
 
 }

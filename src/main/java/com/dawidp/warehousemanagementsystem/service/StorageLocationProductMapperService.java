@@ -18,7 +18,7 @@ public class StorageLocationProductMapperService {
     }
 
     public StorageLocationProductMapper getLocationById(StorageLocationProductMapper locationId) {
-        return repository.findBystorageLocationId(locationId);
+        return repository.findStorageLocationProductMapperByStorageId(locationId);
     }
 
     public List<StorageLocationProductMapper> findAll() {

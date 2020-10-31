@@ -59,12 +59,12 @@ public class SupplyController {
 
     @PostMapping("/supply/{supplyId}")
     public void persistSupply(@PathVariable Long supplyId) {
-		Supply supply = supplyService.findSupplyBySupplyId(supplyId);
-		for(SupplyItem item:supply.getSupplyItem()){
-			Product product = productService.getProductByCode(item.getProduct().getBarcode());
-			product.setStockArrived(item.getAmount());
-			productService.save(product);
-		}
+        Supply supply = supplyService.findSupplyBySupplyId(supplyId);
+        for (SupplyItem item : supply.getSupplyItem()) {
+            Product product = productService.getProductByCode(item.getProduct().getBarcode());
+            product.setStockArrived(item.getAmount());
+            productService.save(product);
+        }
     }
 
     @PostMapping("/supplier")

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +26,8 @@ public class Stock {
     @MapsId
     @JsonBackReference
     private Product product;
+    @OneToMany(mappedBy = "stock")
+    private Set<StorageLocationProductMapper> storages;
 
     public Stock(Long stockId) {
         this.stockId = stockId;

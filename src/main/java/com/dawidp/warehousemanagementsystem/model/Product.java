@@ -1,19 +1,17 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import com.dawidp.warehousemanagementsystem.util.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NaturalId;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -51,42 +49,43 @@ public class Product {
     private LocalDateTime added;
     @OneToMany
     @Column(name = "storage_places")
-    @JoinColumn(name = "palette_barcode")
-    private List<StorageLocationProductMapper> storages;
+    private Set<StorageLocationProductMapper> storages;
 
 
     public void setStockAvailable(double quantity) {
         this.getStock().setStockAvailable(quantity);
     }
-    public double getStockAvailable(){
+
+    public double getStockAvailable() {
         return this.getStock().getStockAvailable();
     }
+
     public void setStockArrived(double quantity) {
         this.getStock()
                 .setStockArrived(quantity);
     }
-    public double getStockArrived(){
+
+    public double getStockArrived() {
         return this.getStock().getStockArrived();
     }
 
-    public double calculateVolume(){
-        double volume = this.measurement.getLength()*this.measurement.getWidth()*this.measurement.getHeight();
+    public double calculateVolume() {
+        double volume = this.measurement.getLength() * this.measurement.getWidth() * this.measurement.getHeight();
         return volume;
     }
 
-    public double getWeight(){
-        if(this.measurement == null) {
+    public double getWeight() {
+        if (this.measurement == null) {
             return 0;
-        }
-        else return this.measurement.getWeight();
+        } else return this.measurement.getWeight();
     }
 
-    public void addMeasurement(Measurement measurement){
+    public void addMeasurement(Measurement measurement) {
         this.setMeasurement(measurement);
         measurement.setProduct(this);
     }
 
-    public void addStock(Stock stock){
+    public void addStock(Stock stock) {
         this.setStock(stock);
         stock.setProduct(this);
     }
