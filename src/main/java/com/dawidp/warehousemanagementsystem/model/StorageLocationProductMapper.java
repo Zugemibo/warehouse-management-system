@@ -15,10 +15,22 @@ public class StorageLocationProductMapper {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "storage_id")
     private Long storageId;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_barcode", referencedColumnName = "product_barcode")
     private Product product;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_available", referencedColumnName = "stock_available")
     private Stock stock;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "space_barcode", referencedColumnName = "space_barcode")
     private PaletteSpace space;
+
+    public StorageLocationProductMapper(Product product, Stock stock, PaletteSpace space) {
+        this.product = product;
+        this.stock = stock;
+        this.space = space;
+    }
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Data
@@ -19,6 +20,9 @@ public class Supplier {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "supplier_id", nullable = false)
 	private Long supplierId;
+	@Column(name = "company_name")
+	@NaturalId
+	private String companyName;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Address address;

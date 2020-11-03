@@ -24,8 +24,8 @@ public class PaletteSpace {
     @OneToMany(mappedBy = "space")
     private Set<StorageLocationProductMapper> storages;
     @NotNull
-    @Column(name = "barcode")
+    @Column(name = "space_barcode")
     @NaturalId
-    private String barcode;
+    private String spaceBarcode;
 
 }

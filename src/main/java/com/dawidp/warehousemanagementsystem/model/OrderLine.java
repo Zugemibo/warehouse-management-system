@@ -22,12 +22,12 @@ public class OrderLine{
     @Column(name = "line_id", nullable = false)
     private Long orderLineId;
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_barcode", referencedColumnName = "product_barcode")
     private Product product;
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    private Integer quantity;
+    private double quantity;
     @Transient
     private double totalPrice;
 

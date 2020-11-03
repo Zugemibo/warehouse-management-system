@@ -13,8 +13,8 @@ public class StorageLocationProductMapperService {
     @Autowired
     StorageLocationProductMapperRepository repository;
 
-    public void save(StorageLocationProductMapper location) {
-        repository.save(location);
+    public StorageLocationProductMapper save(StorageLocationProductMapper location) {
+        return repository.save(location);
     }
 
     public StorageLocationProductMapper getLocationById(StorageLocationProductMapper locationId) {

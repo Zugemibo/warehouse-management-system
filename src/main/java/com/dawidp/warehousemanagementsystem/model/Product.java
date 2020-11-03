@@ -22,16 +22,14 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-    @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
-    @JsonView(Views.Normal.class)
-    private String barcode;
+    private String productBarcode;
     @NotNull(message = "Please provide product name.")
     @JsonView(Views.Normal.class)
     private String name;
-    @ManyToOne
-    @JoinColumn(name = "category_name")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_name", referencedColumnName = "category_name")
     private Category category;
     @JsonView(Views.ProductDetailedView.class)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
@@ -66,7 +64,7 @@ public class Product {
     }
 
     public double getStockArrived() {
-        return this.getStock().getStockArrived();
+        return getStock().getStockArrived();
     }
 
     public double calculateVolume() {

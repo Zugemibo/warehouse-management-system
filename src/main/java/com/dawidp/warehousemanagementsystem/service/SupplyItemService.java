@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class SupplyItemService {
 
     @Autowired
-    SupplyItemRepository supplyItemRepository;
+    private SupplyItemRepository supplyItemRepository;
 
     public SupplyItem save(SupplyItem item) {
         item.getProduct().setStockArrived(item.getAmount());
