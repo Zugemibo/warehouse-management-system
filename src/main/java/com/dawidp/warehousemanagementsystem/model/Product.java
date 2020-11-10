@@ -1,34 +1,39 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import com.dawidp.warehousemanagementsystem.util.Views;
-import com.fasterxml.jackson.annotation.JsonView;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NaturalId;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.Set;
+
+import com.dawidp.warehousemanagementsystem.util.Views;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.NaturalId;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+    @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
+    @JsonView(Views.Normal.class)
     private String productBarcode;
     @NotNull(message = "Please provide product name.")
     @JsonView(Views.Normal.class)
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_name", referencedColumnName = "category_name")
     private Category category;
     @JsonView(Views.ProductDetailedView.class)
@@ -47,43 +52,42 @@ public class Product {
     private LocalDateTime added;
     @OneToMany
     @Column(name = "storage_places")
-    private Set<StorageLocationProductMapper> storages;
+    @JoinColumn(name = "palette_barcode")
+    private List<StorageLocationProductMapper> storages;
 
 
     public void setStockAvailable(double quantity) {
         this.getStock().setStockAvailable(quantity);
     }
-
-    public double getStockAvailable() {
+    public double getStockAvailable(){
         return this.getStock().getStockAvailable();
     }
-
     public void setStockArrived(double quantity) {
         this.getStock()
                 .setStockArrived(quantity);
     }
-
-    public double getStockArrived() {
-        return getStock().getStockArrived();
+    public double getStockArrived(){
+        return this.getStock().getStockArrived();
     }
 
-    public double calculateVolume() {
-        double volume = this.measurement.getLength() * this.measurement.getWidth() * this.measurement.getHeight();
+    public double calculateVolume(){
+        double volume = this.measurement.getLength()*this.measurement.getWidth()*this.measurement.getHeight();
         return volume;
     }
 
-    public double getWeight() {
-        if (this.measurement == null) {
+    public double getWeight(){
+        if(this.measurement == null) {
             return 0;
-        } else return this.measurement.getWeight();
+        }
+        else return this.measurement.getWeight();
     }
 
-    public void addMeasurement(Measurement measurement) {
+    public void addMeasurement(Measurement measurement){
         this.setMeasurement(measurement);
         measurement.setProduct(this);
     }
 
-    public void addStock(Stock stock) {
+    public void addStock(Stock stock){
         this.setStock(stock);
         stock.setProduct(this);
     }

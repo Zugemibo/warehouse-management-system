@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaletteSpaceRepository extends JpaRepository<PaletteSpace, Long>{
 
-	PaletteSpace getSinglePaletteSpaceBySpaceBarcode(String barcode);
+	PaletteSpace getSinglePaletteSpaceByBarcode(String barcode);
 
 
 

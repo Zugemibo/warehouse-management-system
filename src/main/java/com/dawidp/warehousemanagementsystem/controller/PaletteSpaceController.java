@@ -41,7 +41,7 @@ public class PaletteSpaceController {
 				for (int h = 1; h < (height*3) + 1; h++) {
 					code = (String.format("%03d", a) + "-" + String.format("%03d", r) + "-" + String.format("%03d", h));
 					PaletteSpace paletteSpace = new PaletteSpace();
-					paletteSpace.setSpaceBarcode(code);
+					paletteSpace.setBarcode(code);
 					service.save(paletteSpace);
 				}
 			}

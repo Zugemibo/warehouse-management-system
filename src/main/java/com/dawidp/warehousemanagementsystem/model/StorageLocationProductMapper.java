@@ -1,36 +1,51 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.dawidp.warehousemanagementsystem.util.Views;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class StorageLocationProductMapper {
+public class StorageLocationProductMapper implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "storage_id")
-    private Long storageId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_barcode", referencedColumnName = "product_barcode")
+    @Column(name = "storage_location_id")
+    private Long storageLocationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_barcode")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonView(Views.Normal.class)
     private Product product;
+    @JsonView(Views.Normal.class)
+    private double quantity;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "barcode")
+    private PaletteSpace paletteSpace;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stock_available", referencedColumnName = "stock_available")
-    private Stock stock;
+    public PaletteSpace getPaletteSpace() {
+        return paletteSpace;
+    }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "space_barcode", referencedColumnName = "space_barcode")
-    private PaletteSpace space;
+    public void setPaletteSpace(PaletteSpace paletteSpace) {
+        this.paletteSpace = paletteSpace;
+    }
 
-    public StorageLocationProductMapper(Product product, Stock stock, PaletteSpace space) {
+    public Product getProduct(){
+        return this.product;
+    }
+
+    public StorageLocationProductMapper(Product product, double quantity, PaletteSpace paletteSpace) {
         this.product = product;
-        this.stock = stock;
-        this.space = space;
+        this.quantity = quantity;
+        this.paletteSpace = paletteSpace;
     }
 }

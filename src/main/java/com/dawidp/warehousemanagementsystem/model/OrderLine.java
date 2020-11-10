@@ -12,22 +12,24 @@ import javax.persistence.Transient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 
 @Entity
 @Data
 @NoArgsConstructor
-public class OrderLine{
+public class OrderLine implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "line_id", nullable = false)
     private Long orderLineId;
     @ManyToOne
-    @JoinColumn(name = "product_barcode", referencedColumnName = "product_barcode")
+    @JoinColumn(name = "product_id")
     private Product product;
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    private double quantity;
+    private Integer quantity;
     @Transient
     private double totalPrice;
 

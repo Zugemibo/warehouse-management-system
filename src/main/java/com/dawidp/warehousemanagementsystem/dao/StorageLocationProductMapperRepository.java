@@ -7,5 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StorageLocationProductMapperRepository extends JpaRepository<StorageLocationProductMapper, Long> {
-    StorageLocationProductMapper findStorageLocationProductMapperByStorageId(StorageLocationProductMapper locationId);
+    StorageLocationProductMapper findBystorageLocationId(StorageLocationProductMapper locationId);
+
+//    @Query("Select * from StorageLocationProductMapper WHERE StorageLocationProductMapper.product.barcode like '';")
+//    StorageLocationProductMapper myOwnQuery();
 }

@@ -1,29 +1,32 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import com.dawidp.warehousemanagementsystem.model.*;
-import com.dawidp.warehousemanagementsystem.service.*;
+import com.dawidp.warehousemanagementsystem.model.Product;
+import com.dawidp.warehousemanagementsystem.model.Supplier;
+import com.dawidp.warehousemanagementsystem.model.Supply;
+import com.dawidp.warehousemanagementsystem.model.SupplyItem;
+import com.dawidp.warehousemanagementsystem.service.ProductService;
+import com.dawidp.warehousemanagementsystem.service.SupplierService;
+import com.dawidp.warehousemanagementsystem.service.SupplyItemService;
+import com.dawidp.warehousemanagementsystem.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/supply")
-public class SupplyController {
+public class SupplyController{
 
     @Autowired
-    private SupplyService supplyService;
+    SupplyService supplyService;
     @Autowired
-    private SupplierService supplierService;
+    SupplierService supplierService;
     @Autowired
-    private SupplyItemService supplyItemService;
+    SupplyItemService supplyItemService;
     @Autowired
-    private ProductService productService;
-    @Autowired
-    private PaletteSpaceService spaceService;
-    @Autowired
-    private StorageLocationProductMapperService storageService;
+    ProductService productService;
 
     @PostMapping("/addSupply")
     public Supply addSupply() {
@@ -55,6 +58,16 @@ public class SupplyController {
         return supplyService.save(supply);
     }
 
+    @PostMapping("/supply/{supplyId}")
+    public void persistSupply(@PathVariable Long supplyId) {
+		Supply supply = supplyService.findSupplyBySupplyId(supplyId);
+		for(SupplyItem item:supply.getSupplyItem()){
+			Product product = productService.getProductByCode(item.getProduct().getProductBarcode());
+			product.setStockArrived(item.getAmount());
+			productService.save(product);
+		}
+    }
+
     @PostMapping("/supplier")
     public Supplier addSupplier(@RequestBody Supplier supplier) {
         return supplierService.saveSupplier(supplier);
@@ -73,19 +86,6 @@ public class SupplyController {
     @DeleteMapping("/supplier/{id}")
     public void removeSupplier(@PathVariable Long id) {
         supplierService.removeSupplier(id);
-    }
-
-    @PostMapping("/moveFromSupply/{productBarcode}/{quantity}/{spaceBarcode}")
-    public void moveFromSupply(@PathVariable String productBarcode, @PathVariable double quantity, @PathVariable String spaceBarcode){
-        Product product = productService.getProductByCode(productBarcode);
-        if(product.getStock().getStockArrived()>=quantity){
-            product.getStock().setStockArrived(product.getStock().getStockArrived()-quantity);
-            product.getStock().setStockAvailable(quantity);
-            productService.save(product);
-            PaletteSpace space = spaceService.getPaletteSpaceByBarcode(spaceBarcode);
-            StorageLocationProductMapper storage = new StorageLocationProductMapper(product, new Stock(product, quantity), space);
-            storageService.save(storage);
-        }
     }
 
 }

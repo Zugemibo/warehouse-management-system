@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,22 +12,25 @@ import org.hibernate.annotations.CreationTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Supply {
+public class Supply implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "supply_id", nullable = false)
 	private Long supplyId;
+	@NaturalId
+	@Column(name = "supply_number")
 	private String supplyNumber;
 	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
 	private List<SupplyItem> supplyItem;
 	@ManyToOne
-	@JoinColumn(name = "company_name", referencedColumnName = "company_name")
+	@JoinColumn(name = "supplier_Id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Supplier supplier;
 	@CreationTimestamp
