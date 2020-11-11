@@ -28,4 +28,6 @@ public class SupplierService {
     public void removeSupplier(Long id) {
         supplierRepository.deleteById(id);
     }
+
+    public Supplier findSupplierByCompanyName(String companyName){return supplierRepository.findSupplierByCompanyName(companyName);}
 }

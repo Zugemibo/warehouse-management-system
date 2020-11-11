@@ -30,7 +30,7 @@ public class Supply implements Serializable {
 	@OneToMany(mappedBy = "supply", cascade = CascadeType.ALL)
 	private List<SupplyItem> supplyItem;
 	@ManyToOne
-	@JoinColumn(name = "supplier_Id")
+	@JoinColumn(name = "company_name",referencedColumnName = "company_name")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Supplier supplier;
 	@CreationTimestamp

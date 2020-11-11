@@ -28,9 +28,12 @@ public class SupplyController{
     @Autowired
     ProductService productService;
 
-    @PostMapping("/addSupply")
-    public Supply addSupply() {
-        return supplyService.save(new Supply());
+    @PostMapping("/addSupply/{companyName}")
+    public Supply addSupply(@RequestBody Supply supply, @PathVariable String companyName) {
+        Supplier supplier = supplierService.findSupplierByCompanyName(companyName);
+        supply.setSupplier(supplier);
+        supply.setAdded(LocalDateTime.now());
+        return supplyService.save(supply);
     }
 
     @PutMapping("/supply")
@@ -79,7 +82,7 @@ public class SupplyController{
     }
 
     @GetMapping("/supplier/{id}")
-    public Supplier addSupplier(@PathVariable Long id) {
+    public Supplier findSupplier(@PathVariable Long id) {
         return supplierService.findSupplierById(id);
     }
 
