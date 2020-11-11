@@ -52,9 +52,9 @@ public class SupplyController{
         supplyService.deleteById(supplyId);
     }
 
-    @PostMapping("/supply/{supplyId}/line/")
-    public Supply addSupplyLine(@PathVariable Long supplyId, @RequestBody SupplyItem item) {
-        Supply supply = supplyService.findSupplyBySupplyId(supplyId);
+    @PostMapping("/supply/{supplyNumber}/line/")
+    public Supply addSupplyLine(@PathVariable String supplyNumber, @RequestBody SupplyItem item) {
+        Supply supply = supplyService.findSupplyBySupplyNumber(supplyNumber);
         item.setProduct(productService.getProductByCode(item.getProduct().getProductBarcode()));
         supplyItemService.save(item);
         supply.addItem(item);

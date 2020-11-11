@@ -10,4 +10,5 @@ public interface SupplyRepository extends JpaRepository<Supply, Long>{
 
 	Supply findSupplyBySupplyId(Long supplyId);
 
+	Supply findSupplyBySupplyNumber(String supplyNumber);
 }

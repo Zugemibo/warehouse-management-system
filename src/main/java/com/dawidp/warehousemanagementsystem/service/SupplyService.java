@@ -32,4 +32,7 @@ public class SupplyService {
 		return repository.findById(supplyId);
 	}
 
+	public Supply findSupplyBySupplyNumber(String supplyNumber) {
+		return repository.findSupplyBySupplyNumber(supplyNumber);
+	}
 }
