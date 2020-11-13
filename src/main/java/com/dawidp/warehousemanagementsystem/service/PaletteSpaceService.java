@@ -28,7 +28,7 @@ public class PaletteSpaceService {
 	}
 
 	public PaletteSpace getPaletteSpaceByBarcode(String barcode) {
-		return paletteSpaceRepository.getSinglePaletteSpaceByBarcode(barcode);
+		return paletteSpaceRepository.getSinglePaletteSpaceBySpaceBarcode(barcode);
 	}
 
 }

@@ -23,10 +23,14 @@ public class Stock implements Serializable {
     private double stockReserved;
     @Column(name = "stock_arrived")
     private double stockArrived;
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
+    @JoinColumn(name = "product", referencedColumnName = "product_barcode")
     private Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "space", referencedColumnName = "space_barcode")
+    private PaletteSpace space;
 
     public Stock(Long stockId) {
         this.stockId = stockId;

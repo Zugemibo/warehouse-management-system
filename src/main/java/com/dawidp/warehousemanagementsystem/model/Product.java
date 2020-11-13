@@ -3,6 +3,7 @@ package com.dawidp.warehousemanagementsystem.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,8 +41,10 @@ public class Product implements Serializable {
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Measurement measurement;
     @JsonView(Views.ProductDetailedView.class)
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    private Stock stock;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Stock> stocks;
+    @Column(name = "stock_arrived")
+    private double stockArrived;
     @JsonView(Views.ProductDetailedView.class)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Price price;
@@ -50,24 +53,18 @@ public class Product implements Serializable {
     @JsonView(Views.ProductDetailedView.class)
     @CreationTimestamp
     private LocalDateTime added;
-    @OneToMany
-    @Column(name = "storage_places")
-    @JoinColumn(name = "palette_barcode")
-    private List<StorageLocationProductMapper> storages;
+//    @OneToMany
+//    @Column(name = "storage_places")
+//    @JoinColumn(name = "palette_barcode")
+//    private List<StorageLocationProductMapper> storages;
 
-
-    public void setStockAvailable(double quantity) {
-        this.getStock().setStockAvailable(quantity);
-    }
-    public double getStockAvailable(){
-        return this.getStock().getStockAvailable();
-    }
-    public void setStockArrived(double quantity) {
-        this.getStock()
-                .setStockArrived(quantity);
-    }
-    public double getStockArrived(){
-        return this.getStock().getStockArrived();
+    @Transient
+    public double getTotalStockAvailable(Set<Stock> stocks){
+        double quantity = 0;
+        for(Stock stock:stocks){
+            quantity=+stock.getStockAvailable();
+        }
+        return quantity;
     }
 
     public double calculateVolume(){
@@ -87,13 +84,22 @@ public class Product implements Serializable {
         measurement.setProduct(this);
     }
 
-    public void addStock(Stock stock){
-        this.setStock(stock);
-        stock.setProduct(this);
-    }
-
     public void addPrice(Price price) {
         this.setPrice(price);
         price.setProduct(this);
+    }
+
+    public void addStock(Stock stock){
+        this.stocks.add(stock);
+        stock.setProduct(this);
+    }
+
+    public void removeStock(Stock stock){
+        this.stocks.remove(stock);
+        stock.setProduct(null);
+    }
+
+    public void setStockArrived(double arrived){
+        this.stockArrived = this.stockArrived + arrived;
     }
 }

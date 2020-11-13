@@ -13,6 +13,7 @@ import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -23,22 +24,25 @@ public class PaletteSpace implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paletteSpaceId;
-    @JsonView(Views.Normal.class)
-    @OneToMany(mappedBy = "paletteSpace")
-    private List<StorageLocationProductMapper> storages;
+//    @JsonView(Views.Normal.class)
+////    @OneToMany(mappedBy = "paletteSpace")
+////    private List<StorageLocationProductMapper> storages;
+    @JsonView(Views.ProductDetailedView.class)
+    @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Stock> stocks;
     @NotNull
-    @Column(name="barcode")
+    @Column(name="space_barcode")
     @NaturalId
-    private String barcode;
+    private String spaceBarcode;
 
-    public void addStorage(StorageLocationProductMapper storage){
-        storages.add(storage);
-        storage.setPaletteSpace(this);
-    }
-
-    public void removeStorage(StorageLocationProductMapper storage){
-        storages.remove(storage);
-        storage.setPaletteSpace(null);
-    }
+//    public void addStorage(StorageLocationProductMapper storage){
+//        storages.add(storage);
+//        storage.setPaletteSpace(this);
+//    }
+//
+//    public void removeStorage(StorageLocationProductMapper storage){
+//        storages.remove(storage);
+//        storage.setPaletteSpace(null);
+//    }
 
 }
