@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.dawidp.warehousemanagementsystem.model.Product;
@@ -28,11 +29,12 @@ public class SupplyService {
 		repository.deleteById(supplyId);
 		
 	}
-	public Optional<Supply> findSupply(Long supplyId) {
-		return repository.findById(supplyId);
-	}
 
 	public Supply findSupplyBySupplyNumber(String supplyNumber) {
 		return repository.findSupplyBySupplyNumber(supplyNumber);
+	}
+
+	public List<Supply> findSupplyBySupplierCompanyName(String companyName) {
+		return repository.findSupplyBySupplierCompanyName(companyName);
 	}
 }

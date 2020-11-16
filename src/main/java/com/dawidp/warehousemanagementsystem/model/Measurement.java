@@ -1,9 +1,7 @@
 package com.dawidp.warehousemanagementsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 public class Measurement implements Serializable {
     @Id
     @Column(name = "measurement_id")

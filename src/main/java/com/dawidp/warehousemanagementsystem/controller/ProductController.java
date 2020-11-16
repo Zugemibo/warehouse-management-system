@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.dawidp.warehousemanagementsystem.model.*;
 import com.dawidp.warehousemanagementsystem.service.CategoryService;
+import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +29,21 @@ public class ProductController {
     ProductService productService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    PaletteSpaceService paletteSpaceService;
 
-    @PostMapping(value = "/createProduct", produces="application/json")
-    public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
+    @PostMapping(value = "/createProduct")
+    public Product createProduct(@Valid @RequestBody Product product) {
         productService.save(product);
         Price price = new Price(product.getProductId());
         Measurement measurement = new Measurement(product.getProductId());
-        Stock stock = new Stock(product.getProductId());
+//        PaletteSpace arrival = paletteSpaceService.getPaletteSpaceByBarcode("DOSTAWA");
+//        Stock stock = new Stock(product, arrival);
         product.addPrice(price);
         product.addMeasurement(measurement);
-        product.addStock(stock);
+//        product.addStock(stock);
         productService.save(product);
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+        return product;
     }
 
     @GetMapping("/getProductById/{id}")

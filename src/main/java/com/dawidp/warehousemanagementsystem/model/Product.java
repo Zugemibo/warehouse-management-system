@@ -2,25 +2,22 @@ package com.dawidp.warehousemanagementsystem.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.dawidp.warehousemanagementsystem.util.Views;
-import com.fasterxml.jackson.annotation.JsonView;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 public class Product implements Serializable {
 
     @Id
@@ -29,34 +26,28 @@ public class Product implements Serializable {
     @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
-    @JsonView(Views.Normal.class)
     private String productBarcode;
     @NotNull(message = "Please provide product name.")
-    @JsonView(Views.Normal.class)
+    @NaturalId
     private String name;
     @ManyToOne
     @JoinColumn(name = "category_name", referencedColumnName = "category_name")
+    @EqualsAndHashCode.Exclude
     private Category category;
-    @JsonView(Views.ProductDetailedView.class)
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Measurement measurement;
-    @JsonView(Views.ProductDetailedView.class)
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Stock> stocks;
+    private Set<Stock> stocks = new HashSet<>();
     @Column(name = "stock_arrived")
     private double stockArrived;
-    @JsonView(Views.ProductDetailedView.class)
+    @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Price price;
-    @JsonView(Views.ProductDetailedView.class)
     private String description;
-    @JsonView(Views.ProductDetailedView.class)
     @CreationTimestamp
     private LocalDateTime added;
-//    @OneToMany
-//    @Column(name = "storage_places")
-//    @JoinColumn(name = "palette_barcode")
-//    private List<StorageLocationProductMapper> storages;
 
     @Transient
     public double getTotalStockAvailable(Set<Stock> stocks){
@@ -72,6 +63,7 @@ public class Product implements Serializable {
         return volume;
     }
 
+    @Transient
     public double getWeight(){
         if(this.measurement == null) {
             return 0;
@@ -90,16 +82,20 @@ public class Product implements Serializable {
     }
 
     public void addStock(Stock stock){
-        this.stocks.add(stock);
+        stocks.add(stock);
         stock.setProduct(this);
     }
 
     public void removeStock(Stock stock){
-        this.stocks.remove(stock);
+        stocks.remove(stock);
         stock.setProduct(null);
     }
 
     public void setStockArrived(double arrived){
         this.stockArrived = this.stockArrived + arrived;
+    }
+
+    public void decreaseStockArrived(double stock){
+        this.stockArrived = this.stockArrived - stock;
     }
 }

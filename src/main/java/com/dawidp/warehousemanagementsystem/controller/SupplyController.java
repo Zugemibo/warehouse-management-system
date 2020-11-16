@@ -1,13 +1,7 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import com.dawidp.warehousemanagementsystem.model.Product;
-import com.dawidp.warehousemanagementsystem.model.Supplier;
-import com.dawidp.warehousemanagementsystem.model.Supply;
-import com.dawidp.warehousemanagementsystem.model.SupplyItem;
-import com.dawidp.warehousemanagementsystem.service.ProductService;
-import com.dawidp.warehousemanagementsystem.service.SupplierService;
-import com.dawidp.warehousemanagementsystem.service.SupplyItemService;
-import com.dawidp.warehousemanagementsystem.service.SupplyService;
+import com.dawidp.warehousemanagementsystem.model.*;
+import com.dawidp.warehousemanagementsystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +14,17 @@ import java.util.List;
 public class SupplyController{
 
     @Autowired
-    SupplyService supplyService;
+    private SupplyService supplyService;
     @Autowired
-    SupplierService supplierService;
+    private SupplierService supplierService;
     @Autowired
-    SupplyItemService supplyItemService;
+    private SupplyItemService supplyItemService;
     @Autowired
-    ProductService productService;
+    private ProductService productService;
+    @Autowired
+    private PaletteSpaceService spaceService;
+    @Autowired
+    private StockService stockService;
 
     @PostMapping("/addSupply/{companyName}")
     public Supply addSupply(@RequestBody Supply supply, @PathVariable String companyName) {
@@ -89,6 +87,24 @@ public class SupplyController{
     @DeleteMapping("/supplier/{id}")
     public void removeSupplier(@PathVariable Long id) {
         supplierService.removeSupplier(id);
+    }
+
+    @GetMapping("/{companyName}/supplies")
+    public List<Supply> listSupplierSupplies(@PathVariable String companyName){
+        return supplyService.findSupplyBySupplierCompanyName(companyName);
+    }
+
+    @PostMapping("/{productBarcode}/{quantity}/{localization}")
+    public String moveProductFromSupply(@PathVariable String productBarcode, @PathVariable double quantity, @PathVariable String localization){
+        Product product = productService.getProductByCode(productBarcode);
+        if(product.getStockArrived()>=quantity) {
+            PaletteSpace space = spaceService.getPaletteSpaceByBarcode(localization);
+            Stock stock = new Stock(quantity, product, space);
+            stockService.save(stock);
+            product.decreaseStockArrived(quantity);
+            productService.save(product);
+            return "Successfully moved to: " + localization;
+        }else return "There is no such products";
     }
 
 }
