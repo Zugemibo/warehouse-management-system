@@ -16,6 +16,6 @@ public class StockService {
     }
 
     public Stock getStock(String spaceFrom, String productBarcode) {
-        return stockRepository.getStock(spaceFrom, productBarcode);
+        return stockRepository.getStockBySpaceBarcodeAndProductBarcode(spaceFrom, productBarcode);
     }
 }
