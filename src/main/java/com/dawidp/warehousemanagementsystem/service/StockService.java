@@ -5,6 +5,8 @@ import com.dawidp.warehousemanagementsystem.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class StockService {
 
@@ -17,5 +19,10 @@ public class StockService {
 
     public Stock getStock(String spaceFrom, String productBarcode) {
         return stockRepository.getStockBySpaceBarcodeAndProductBarcode(spaceFrom, productBarcode);
+    }
+
+    @Transactional
+    public void deleteStockById(Long stockId) {
+        stockRepository.deleteStockById(stockId);
     }
 }
