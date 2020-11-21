@@ -3,12 +3,13 @@ package com.dawidp.warehousemanagementsystem.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dawidp.warehousemanagementsystem.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
@@ -26,6 +27,7 @@ public class Product implements Serializable {
     @NotNull(message = "Please provide EAN.")
     @NaturalId
     @Column(name = "product_barcode")
+    @JsonView(Views.Stock.class)
     private String productBarcode;
     @NotNull(message = "Please provide product name.")
     @NaturalId

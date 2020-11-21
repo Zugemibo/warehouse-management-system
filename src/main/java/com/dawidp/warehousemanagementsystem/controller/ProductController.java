@@ -7,9 +7,10 @@ import javax.validation.Valid;
 import com.dawidp.warehousemanagementsystem.model.*;
 import com.dawidp.warehousemanagementsystem.service.CategoryService;
 import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
+import com.dawidp.warehousemanagementsystem.service.StockService;
+import com.dawidp.warehousemanagementsystem.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,13 @@ import com.dawidp.warehousemanagementsystem.service.ProductService;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
     @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
     @Autowired
-    PaletteSpaceService paletteSpaceService;
+    private PaletteSpaceService paletteSpaceService;
+    @Autowired
+    private StockService stockService;
 
     @PostMapping(value = "/createProduct")
     public Product createProduct(@Valid @RequestBody Product product) {
@@ -102,5 +105,11 @@ public class ProductController {
         Product product = productService.getProductByCode(productBarcode);
         product.setCategory(category);
         return productService.save(product);
+    }
+
+    @JsonView(Views.Stock.class)
+    @GetMapping("/{productBarcode}/getStocks")
+    public List<Stock> getProductStocks(@PathVariable String productBarcode){
+        return stockService.getProductStocks(productBarcode);
     }
 }

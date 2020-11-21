@@ -3,7 +3,7 @@ package com.dawidp.warehousemanagementsystem.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.dawidp.warehousemanagementsystem.util.Views;
+import com.dawidp.warehousemanagementsystem.view.Views;
 import com.fasterxml.jackson.annotation.*;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,6 @@ import org.hibernate.annotations.NaturalId;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,12 +25,12 @@ public class PaletteSpace implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paletteSpaceId;
-    @JsonView(Views.ProductDetailedView.class)
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Stock> stocks = new HashSet<>();
     @NotNull
     @Column(name="space_barcode")
     @NaturalId
+    @JsonView(Views.Stock.class)
     private String spaceBarcode;
 
     public void addStock(Stock stock){

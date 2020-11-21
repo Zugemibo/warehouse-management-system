@@ -1,8 +1,8 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.dawidp.warehousemanagementsystem.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,16 +17,19 @@ public class Stock implements Serializable {
     @Column(name = "stock_id")
     private Long stockId;
     @Column(name = "stock_available")
+    @JsonView(Views.Stock.class)
     private double stockAvailable;
     @Column(name = "stock_reserved")
     private double stockReserved;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product", referencedColumnName = "product_barcode")
     @EqualsAndHashCode.Exclude
+    @JsonView(Views.Stock.class)
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "space", referencedColumnName = "space_barcode")
     @EqualsAndHashCode.Exclude
+    @JsonView(Views.Stock.class)
     private PaletteSpace space;
 
     public Stock(Long stockId) {

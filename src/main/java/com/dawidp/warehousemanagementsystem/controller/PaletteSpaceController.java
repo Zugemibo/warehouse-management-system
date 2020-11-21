@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
-import com.dawidp.warehousemanagementsystem.util.Views;
+import com.dawidp.warehousemanagementsystem.model.Stock;
+import com.dawidp.warehousemanagementsystem.service.StockService;
+import com.dawidp.warehousemanagementsystem.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +23,14 @@ import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 public class PaletteSpaceController {
 
 	@Autowired
-	PaletteSpaceService service;
+	private PaletteSpaceService spaceService;
+	@Autowired
+	private StockService stockService;
 
 	@PostMapping("/single/{name}")
 	public PaletteSpace createSingleSpace(@PathVariable String name){
 		PaletteSpace paletteSpace = new PaletteSpace(0l,null, name);
-		return service.saveSingle(paletteSpace);
+		return spaceService.saveSingle(paletteSpace);
 	}
 
 	@PostMapping("/create")
@@ -42,22 +46,24 @@ public class PaletteSpaceController {
 					code = (String.format("%03d", a) + "-" + String.format("%03d", r) + "-" + String.format("%03d", h));
 					PaletteSpace paletteSpace = new PaletteSpace();
 					paletteSpace.setSpaceBarcode(code);
-					service.save(paletteSpace);
+					spaceService.save(paletteSpace);
 				}
 			}
 		}
-		return service.findAll();
+		return spaceService.findAll();
 	}
-	@JsonView(Views.Normal.class)
 	@GetMapping("/getPaletteSpaceByBarcode/{barcode}")
 	public PaletteSpace getPaletteSpaceByBarcode(@PathVariable String barcode) {
-		return service.getPaletteSpaceByBarcode(barcode);
+		return spaceService.getPaletteSpaceByBarcode(barcode);
 	}
 	@GetMapping("/getPaletteSpaces")
-	public List<PaletteSpace> getpaletteSpaces() {
-		return service.findAll();
+	public List<PaletteSpace> getPaletteSpaces() {
+		return spaceService.findAll();
 	}
 
-	
-	
+	@JsonView(Views.Stock.class)
+	@GetMapping("/{spaceBarcode}/getStocks")
+	public List<Stock> getSpaceStocks(@PathVariable String spaceBarcode){
+		return stockService.getSpaceStocks(spaceBarcode);
+	}
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class StockService {
@@ -24,5 +25,13 @@ public class StockService {
     @Transactional
     public void deleteStockById(Long stockId) {
         stockRepository.deleteStockById(stockId);
+    }
+
+    public List<Stock> getProductStocks(String productBarcode) {
+        return stockRepository.getProductStocks(productBarcode);
+    }
+
+    public List<Stock> getSpaceStocks(String spaceBarcode) {
+        return stockRepository.getSpaceStocks(spaceBarcode);
     }
 }
