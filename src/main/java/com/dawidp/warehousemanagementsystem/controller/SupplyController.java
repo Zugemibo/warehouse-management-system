@@ -104,7 +104,7 @@ public class SupplyController{
             product.decreaseStockArrived(quantity);
             productService.save(product);
             return "Successfully moved to: " + localization;
-        }else return "There is no such products";
+        }else return "There is no such quantity";
     }
 
 }

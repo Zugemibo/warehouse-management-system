@@ -10,6 +10,8 @@ import com.dawidp.warehousemanagementsystem.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/api/move")
 public class MoveController {
@@ -22,19 +24,28 @@ public class MoveController {
     private PaletteSpaceService spaceService;
 
     @PostMapping("/unitMove")
-    public String moveOneProduct(@RequestBody ProductMovement productMovement){
-        Stock stock = stockService.getStock(productMovement.getSpaceFrom(), productMovement.getProductBarcode());
-        if(productMovement.getQuantity()<=stock.getStockAvailable()){
-            stock.setStockAvailable(stock.getStockAvailable()-productMovement.getQuantity());
-            Product product = productService.getProductByCode(productMovement.getProductBarcode());
-            PaletteSpace spaceWhere = spaceService.getPaletteSpaceByBarcode(productMovement.getSpaceWhere());
-            Stock newStock = new Stock(productMovement.getQuantity(), product, spaceWhere);
-            if(stock.getStockAvailable() == 0){
-                stockService.deleteStockById(stock.getStockId());
+    public String moveOneProduct(@RequestBody ProductMovement movement){
+        Stock stockFrom = stockService.getStock(movement.getSpaceFrom(), movement.getProductBarcode());
+        if(movement.getQuantity()<=stockFrom.getStockAvailable()){
+            stockFrom.decreaseQuantity(movement.getQuantity());
+            Product product = productService.getProductByCode(movement.getProductBarcode());
+            PaletteSpace spaceWhere = spaceService.getPaletteSpaceByBarcode(movement.getSpaceWhere());
+            Stock stockIfExist = stockService.getStock(spaceWhere.getSpaceBarcode(), product.getProductBarcode());
+            if(stockFrom.getStockAvailable() == 0){
+                stockService.deleteStockById(stockFrom.getStockId());
             }
-            else stockService.save(stock);
-            stockService.save(newStock);
-            return "Product with quantity " + productMovement.getQuantity() + " has been moved to " + productMovement.getSpaceWhere();
+            else{
+                stockService.save(stockFrom);
+            }
+            if(Objects.nonNull(stockIfExist)){
+                stockIfExist.increaseQuantity(movement.getQuantity());
+                stockService.save(stockIfExist);
+            }
+            else{
+                Stock newStock = new Stock(movement.getQuantity(), product, spaceWhere);
+                stockService.save(newStock);
+            }
+            return "Product with quantity " + movement.getQuantity() + " has been moved to " + movement.getSpaceWhere();
         }
         else return "There are no such quantity";
 

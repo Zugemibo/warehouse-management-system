@@ -41,4 +41,12 @@ public class Stock implements Serializable {
         product.addStock(this);
         space.addStock(this);
     }
+
+    public void decreaseQuantity(Double quantity){
+        this.setStockAvailable(this.getStockAvailable() - quantity);
+    }
+
+    public void increaseQuantity(Double quantity){
+        this.setStockAvailable(this.getStockAvailable() + quantity);
+    }
 }
