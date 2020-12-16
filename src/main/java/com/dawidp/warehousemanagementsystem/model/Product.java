@@ -73,6 +73,7 @@ public class Product implements Serializable {
         else return this.measurement.getWeight();
     }
 
+
     public void addMeasurement(Measurement measurement){
         this.setMeasurement(measurement);
         measurement.setProduct(this);

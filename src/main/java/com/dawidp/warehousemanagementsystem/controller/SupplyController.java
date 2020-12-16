@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
+import com.dawidp.warehousemanagementsystem.exceptions.NoSuchAmountException;
 import com.dawidp.warehousemanagementsystem.model.*;
 import com.dawidp.warehousemanagementsystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +96,7 @@ public class SupplyController{
     }
 
     @PostMapping("/{productBarcode}/{quantity}/{localization}")
-    public String moveProductFromSupply(@PathVariable String productBarcode, @PathVariable double quantity, @PathVariable String localization){
+    public String moveProductFromSupply(@PathVariable String productBarcode, @PathVariable double quantity, @PathVariable String localization) throws NoSuchAmountException {
         Product product = productService.getProductByCode(productBarcode);
         if(product.getStockArrived()>=quantity) {
             PaletteSpace space = spaceService.getPaletteSpaceByBarcode(localization);
@@ -104,7 +105,8 @@ public class SupplyController{
             product.decreaseStockArrived(quantity);
             productService.save(product);
             return "Successfully moved to: " + localization;
-        }else return "There is no such quantity";
+//        }else return "There is no such quantity";
+        }else throw new NoSuchAmountException("There are no such quantity");
     }
 
 }

@@ -52,6 +52,7 @@ public class PaletteSpaceController {
 		}
 		return spaceService.findAll();
 	}
+	@JsonView(Views.Stock.class)
 	@GetMapping("/getPaletteSpaceByBarcode/{barcode}")
 	public PaletteSpace getPaletteSpaceByBarcode(@PathVariable String barcode) {
 		return spaceService.getPaletteSpaceByBarcode(barcode);
