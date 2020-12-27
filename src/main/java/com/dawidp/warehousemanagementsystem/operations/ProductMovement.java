@@ -1,4 +1,4 @@
-package com.dawidp.warehousemanagementsystem.model;
+package com.dawidp.warehousemanagementsystem.operations;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.dawidp.warehousemanagementsystem.operations.OrderPick;
+import com.dawidp.warehousemanagementsystem.service.OrderPickService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,75 +27,75 @@ import com.dawidp.warehousemanagementsystem.service.ProductService;
 public class OrderController {
 
 	@Autowired
-	OrderService service;
+	private OrderService orderService;
 
 	@Autowired
-	OrderLineService lservice;
+	private OrderLineService orderLineService;
 
 	@Autowired
-	ProductService pservice;
+	private ProductService productService;
+
+	@Autowired
+	private OrderPickService orderPickService;
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 	Date date = new Date(System.currentTimeMillis());
 
 	@GetMapping("/order/{orderId}")
 	public Order getOrderById(@PathVariable("orderId") Long orderId) {
-		return service.getOrder(orderId);
+		return orderService.getOrder(orderId);
 	}
 
 	@GetMapping("/orders")
 	public List<Order> getOrders() {
-		List<Order> orders = service.getAllOrders();
+		List<Order> orders = orderService.getAllOrders();
 		return orders;
 	}
 
 	@PostMapping("/order")
-	public Order createOrder() {
+	public Order addOrder() {
 		Order order = new Order();
-		return service.save(order);
+		return orderService.save(order);
 	}
 
 	@PostMapping("/order/{orderId}/lines")
 	public Order addToOrder(@PathVariable("orderId") Long orderId, @RequestBody OrderLine line) {
-		Order order = service.getOrder(orderId);
-		Product product = pservice.getProductById(line.getProduct().getProductId());
+		Order order = orderService.getOrder(orderId);
+		Product product = productService.getProductById(line.getProduct().getProductId());
 		order.addLine(line);
-		return service.save(order);
+		return orderService.save(order);
 	}
 
 	@DeleteMapping("/order/{orderId}/clear")
 	public Order deleteAllLines(@PathVariable("orderId") Long orderId) {
-		Order order = service.getOrder(orderId);
+		Order order = orderService.getOrder(orderId);
 		order.removeLines();
-		return service.save(order);
+		return orderService.save(order);
 	}
 
 	@DeleteMapping("/order/{orderId}/lines/{id}")
 	public Order deleteFromOrder(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id) {
-		Order order = service.getOrder(orderId);
-		OrderLine line = lservice.getOrderLine(id);
+		Order order = orderService.getOrder(orderId);
+		OrderLine line = orderLineService.getOrderLine(id);
 		order.removeLine(line);
-		return service.save(order);
+		return orderService.save(order);
 	}
 
 	@DeleteMapping("/order/{orderId}/cancel-order")
 	public void deleteOrderById(@PathVariable("orderId") Long orderId) {
-		service.deleteOrderById(orderId);
+		orderService.deleteOrderById(orderId);
 	}
 
-	/*
-	 * @PutMapping("/order/{OrderId}/lines/{id}") public
-	 * ResponseEntity<ShoppingOrder> changeQuantity(@PathVariable("OrderId") int
-	 * OrderId,
-	 * 
-	 * @PathVariable("id") int id, @RequestBody LineItem line) { ShoppingOrder Order
-	 * = service.getOrderById(OrderId); LineItem lineItem =
-	 * service.getOrderLineById(id); Order.setSubTotal(Order.getSubTotal() -
-	 * lineItem.getTotalPrice()); lineItem.setQuantity(line.getQuantity());
-	 * lineItem.setTotalPrice(lineItem.getQuantity() *
-	 * lineItem.getProduct().getPrice()); Order.setSubTotal(Order.getSubTotal() +
-	 * lineItem.getTotalPrice()); service.updateOrder(Order); return new
-	 * ResponseEntity<>(Order, HttpStatus.OK); }
-	 */
+//	@PostMapping("/moveToPick/{orderId}")
+//	public String moveOrderToOrderPick(@PathVariable("orderId") Long orderId){
+//		Order order = orderService.getOrder(orderId);
+//		OrderPick orderPick = new OrderPick(order);
+//		for(OrderLine orderLine:order.getLinesItems()){
+//
+//        }
+//
+//
+//		return null;
+//	}
 
 }

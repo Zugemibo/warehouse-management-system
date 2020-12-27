@@ -1,9 +1,8 @@
 package com.dawidp.warehousemanagementsystem.service;
 
-import com.dawidp.warehousemanagementsystem.exceptions.NoSuchAmountException;
 import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
 import com.dawidp.warehousemanagementsystem.model.Product;
-import com.dawidp.warehousemanagementsystem.model.ProductMovement;
+import com.dawidp.warehousemanagementsystem.operations.ProductMovement;
 import com.dawidp.warehousemanagementsystem.model.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

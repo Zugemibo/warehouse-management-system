@@ -27,6 +27,7 @@ public class PaletteSpace implements Serializable {
     private Long paletteSpaceId;
     @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Stock> stocks = new HashSet<>();
+    private int alley;
     @NotNull
     @Column(name="space_barcode")
     @NaturalId

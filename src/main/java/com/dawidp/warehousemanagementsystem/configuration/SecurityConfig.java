@@ -26,7 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtFilter jwtFilter;
 
-    private String[] permitAll = {"/authenticate",
+    private String[] permitAll = {
+            "/authenticate",
             "/register",
             "/v2/api-docs",
             "/swagger-resources/**",
@@ -54,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.exceptionHandling().accessDeniedPage("/login");
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).anonymous();
 
         http.authorizeRequests()//
                 .antMatchers(permitAll).permitAll()//

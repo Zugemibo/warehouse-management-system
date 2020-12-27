@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.dawidp.warehousemanagementsystem.operations.OrderPick;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,4 +28,16 @@ public class User implements Serializable {
     private UserRole role;
     @Column(name = "user_firstname")
     private String userFirstName;
+    @OneToMany
+    private Set<OrderPick> userOrders = new HashSet<>();
+
+    public void addOrder(OrderPick orderPick){
+        userOrders.add(orderPick);
+        orderPick.setUser(this);
+    }
+
+    public void removeOrder(OrderPick orderPick){
+        userOrders.remove(orderPick);
+        orderPick.setUser(null);
+    }
 }

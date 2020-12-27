@@ -106,10 +106,4 @@ public class ProductController {
         product.setCategory(category);
         return productService.save(product);
     }
-
-    @JsonView(Views.Stock.class)
-    @GetMapping("/{productBarcode}/getStocks")
-    public List<Stock> getProductStocks(@PathVariable String productBarcode){
-        return stockService.getProductStocks(productBarcode);
-    }
 }

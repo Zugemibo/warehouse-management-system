@@ -27,11 +27,11 @@ public class PaletteSpaceController {
 	@Autowired
 	private StockService stockService;
 
-	@PostMapping("/single/{name}")
-	public PaletteSpace createSingleSpace(@PathVariable String name){
-		PaletteSpace paletteSpace = new PaletteSpace(0l,null, name);
-		return spaceService.saveSingle(paletteSpace);
-	}
+//	@PostMapping("/single/{name}")
+//	public PaletteSpace createSingleSpace(@PathVariable String name){
+//		PaletteSpace paletteSpace = new PaletteSpace(0l,null, name);
+//		return spaceService.saveSingle(paletteSpace);
+//	}
 
 	@PostMapping("/create")
 	public List<PaletteSpace> createSpace(@RequestBody Map<String, Object> map){

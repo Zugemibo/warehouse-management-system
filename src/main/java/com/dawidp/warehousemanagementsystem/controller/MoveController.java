@@ -1,6 +1,6 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import com.dawidp.warehousemanagementsystem.model.ProductMovement;
+import com.dawidp.warehousemanagementsystem.operations.ProductMovement;
 import com.dawidp.warehousemanagementsystem.model.Stock;
 import com.dawidp.warehousemanagementsystem.service.MoveService;
 import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;

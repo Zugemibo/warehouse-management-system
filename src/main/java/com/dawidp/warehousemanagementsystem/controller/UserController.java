@@ -5,13 +5,19 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.dawidp.warehousemanagementsystem.exceptions.InvalidCredentialsException;
+import com.dawidp.warehousemanagementsystem.model.AuthRequest;
 import com.dawidp.warehousemanagementsystem.model.User;
 import com.dawidp.warehousemanagementsystem.service.UserService;
+import com.dawidp.warehousemanagementsystem.util.JwtFilter;
+import com.dawidp.warehousemanagementsystem.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,11 +58,4 @@ public class UserController {
         User user = userService.findByUserId(userId);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
-
-    @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        userService.createUser(user);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
-
 }
