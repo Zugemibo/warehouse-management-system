@@ -1,17 +1,9 @@
 package com.dawidp.warehousemanagementsystem.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 
@@ -29,16 +21,17 @@ public class OrderLine implements Serializable {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    private Integer quantity;
+    private double quantity;
     @Transient
     private double totalPrice;
 
     @Transient
-    public double calculateVolume(){
+    public double calculateVolume() {
         return product.calculateVolume();
     }
+
     @Transient
-    public double getWeight(){
+    public double getWeight() {
         return product.getWeight();
     }
 }

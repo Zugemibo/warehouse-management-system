@@ -1,7 +1,7 @@
 package com.dawidp.warehousemanagementsystem.operations;
 
-import com.dawidp.warehousemanagementsystem.model.Product;
-import com.dawidp.warehousemanagementsystem.operations.OrderPick;
+import com.dawidp.warehousemanagementsystem.model.OrderLine;
+import com.dawidp.warehousemanagementsystem.model.Stock;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,13 +15,21 @@ public class PickLine implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pickline_id", nullable = false)
     private Long pickLineId;
-    @ManyToOne
-    @JoinColumn(name = "product_barcode", referencedColumnName = "product_barcode")
-    private Product product;
+    @OneToOne
+    private OrderLine orderLine;
+    @OneToOne
+    private Stock stock;
     @ManyToOne
     @JoinColumn(name = "order_number", referencedColumnName = "order_number")
     private OrderPick orderPick;
-    private Integer quantity;
-    @Transient
-    private double totalPrice;
+    @Enumerated
+    private LineStatus lineStatus;
+    private double quantity;
+
+    public PickLine(OrderLine orderLine, Stock stock) {
+        this.stock = stock;
+        this.orderLine = orderLine;
+        this.quantity = orderLine.getQuantity();
+
+    }
 }

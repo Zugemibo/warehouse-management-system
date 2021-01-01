@@ -21,7 +21,7 @@ public class StockController {
 
     @JsonView(Views.Stock.class)
     @GetMapping("/{productBarcode}")
-    public List<Stock> getProductStocks(@PathVariable String productBarcode){
+    public List<Stock> getProductStocks(@PathVariable String productBarcode) {
         return stockService.getProductStocks(productBarcode);
     }
 

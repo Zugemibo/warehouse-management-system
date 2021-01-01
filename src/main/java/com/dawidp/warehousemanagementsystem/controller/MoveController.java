@@ -1,7 +1,7 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import com.dawidp.warehousemanagementsystem.operations.ProductMovement;
 import com.dawidp.warehousemanagementsystem.model.Stock;
+import com.dawidp.warehousemanagementsystem.operations.ProductMovement;
 import com.dawidp.warehousemanagementsystem.service.MoveService;
 import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 import com.dawidp.warehousemanagementsystem.service.ProductService;
@@ -24,12 +24,12 @@ public class MoveController {
     private MoveService moveService;
 
     @PostMapping("/unitMove")
-    public String moveOneProduct(@RequestBody ProductMovement movement){
+    public String moveOneProduct(@RequestBody ProductMovement movement) {
         return moveService.moveOneProduct(movement);
     }
 
     @GetMapping("/getStock/{spaceWhere}/{product}")//helper
-    public Stock getStock(@PathVariable String spaceWhere, @PathVariable String product){
+    public Stock getStock(@PathVariable String spaceWhere, @PathVariable String product) {
         Stock stock = stockService.getStock(spaceWhere, product);
         return stock;
     }

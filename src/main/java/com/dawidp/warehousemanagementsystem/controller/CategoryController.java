@@ -17,19 +17,19 @@ public class CategoryController {
 
     @PostMapping("")
     public Category addCategory(@RequestBody Category category) throws EmptyFieldException {
-        if(category.getCategoryName() == null){
+        if (category.getCategoryName() == null) {
             throw new EmptyFieldException("Please provide category name.");
         }
         return service.save(category);
     }
 
     @GetMapping("")
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         return service.findAll();
     }
 
     @GetMapping("/{categoryName}")
-    public Category getCategoryByName(@PathVariable String categoryName){
+    public Category getCategoryByName(@PathVariable String categoryName) {
         return service.findCategoryByName(categoryName);
     }
 }

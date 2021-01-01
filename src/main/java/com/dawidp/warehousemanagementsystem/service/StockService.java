@@ -34,4 +34,13 @@ public class StockService {
     public List<Stock> getSpaceStocks(String spaceBarcode) {
         return stockRepository.getSpaceStocks(spaceBarcode);
     }
+
+    public Stock getStockWithSufficientQuantity(String productBarcode, double quantity) {
+        List<Stock> list = stockRepository.getStockWithSufficientQuantity(productBarcode, quantity);
+        for (Stock stock : list) {
+
+            return stock;
+        }
+        return null;
+    }
 }

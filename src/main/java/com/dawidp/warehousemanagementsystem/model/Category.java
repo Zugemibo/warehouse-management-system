@@ -1,5 +1,7 @@
 package com.dawidp.warehousemanagementsystem.model;
 
+import com.dawidp.warehousemanagementsystem.view.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long categoryId;
+    @JsonView(Views.Product.class)
     @Column(name = "category_name")
     @NotNull(message = "Please add category name.")
     private String categoryName;

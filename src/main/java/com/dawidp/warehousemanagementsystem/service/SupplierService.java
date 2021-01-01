@@ -29,5 +29,7 @@ public class SupplierService {
         supplierRepository.deleteById(id);
     }
 
-    public Supplier findSupplierByCompanyName(String companyName){return supplierRepository.findSupplierByCompanyName(companyName);}
+    public Supplier findSupplierByCompanyName(String companyName) {
+        return supplierRepository.findSupplierByCompanyName(companyName);
+    }
 }

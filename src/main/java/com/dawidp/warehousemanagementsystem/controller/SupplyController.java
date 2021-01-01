@@ -6,13 +6,12 @@ import com.dawidp.warehousemanagementsystem.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/supply")
-public class SupplyController{
+public class SupplyController {
 
     @Autowired
     private SupplyService supplyService;
@@ -62,12 +61,12 @@ public class SupplyController{
 
     @PostMapping("/supply/{supplyId}")
     public void persistSupply(@PathVariable Long supplyId) {
-		Supply supply = supplyService.findSupplyBySupplyId(supplyId);
-		for(SupplyItem item:supply.getSupplyItem()){
-			Product product = productService.getProductByCode(item.getProduct().getProductBarcode());
-			product.setStockArrived(item.getAmount());
-			productService.save(product);
-		}
+        Supply supply = supplyService.findSupplyBySupplyId(supplyId);
+        for (SupplyItem item : supply.getSupplyItem()) {
+            Product product = productService.getProductByCode(item.getProduct().getProductBarcode());
+            product.setStockArrived(item.getAmount());
+            productService.save(product);
+        }
     }
 
     @PostMapping("/supplier")
@@ -91,14 +90,14 @@ public class SupplyController{
     }
 
     @GetMapping("/{companyName}/supplies")
-    public List<Supply> listSupplierSupplies(@PathVariable String companyName){
+    public List<Supply> listSupplierSupplies(@PathVariable String companyName) {
         return supplyService.findSupplyBySupplierCompanyName(companyName);
     }
 
     @PostMapping("/{productBarcode}/{quantity}/{localization}")
     public String moveProductFromSupply(@PathVariable String productBarcode, @PathVariable double quantity, @PathVariable String localization) throws NoSuchAmountException {
         Product product = productService.getProductByCode(productBarcode);
-        if(product.getStockArrived()>=quantity) {
+        if (product.getStockArrived() >= quantity) {
             PaletteSpace space = spaceService.getPaletteSpaceByBarcode(localization);
             Stock stock = new Stock(quantity, product, space);
             stockService.save(stock);
@@ -106,7 +105,7 @@ public class SupplyController{
             productService.save(product);
             return "Successfully moved to: " + localization;
 //        }else return "There is no such quantity";
-        }else throw new NoSuchAmountException("There are no such quantity");
+        } else throw new NoSuchAmountException("There are no such quantity");
     }
 
 }

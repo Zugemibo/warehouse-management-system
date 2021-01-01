@@ -2,7 +2,6 @@ package com.dawidp.warehousemanagementsystem.service;
 
 import com.dawidp.warehousemanagementsystem.dao.ProductRepository;
 import com.dawidp.warehousemanagementsystem.model.Product;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +38,4 @@ public class ProductService {
     public Product getProductByCode(String code) {
         return repository.findProductByProductBarcode(code);
     }
-    /*public void moveProduct(String firstPalette, String productCode, String secondPalette) {
-    	
-    }
-    */
 }

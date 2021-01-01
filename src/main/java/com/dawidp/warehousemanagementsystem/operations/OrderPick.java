@@ -4,11 +4,13 @@ import com.dawidp.warehousemanagementsystem.model.Order;
 import com.dawidp.warehousemanagementsystem.model.OrderDeliveryType;
 import com.dawidp.warehousemanagementsystem.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -26,17 +28,27 @@ public class OrderPick implements Serializable {
     private int orderNumberOfItems;
     private String consignmentNoteNumber;
     private double percentageDone;
+    @OneToMany
+    private Set<PickLine> pickLines = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateStarted;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateEnded;
 
-    public OrderPick(Order order){
+    public OrderPick(Order order) {
         this.orderNumberOfItems = order.getLinesItems().size();
         this.percentageDone = 0;
+    }
 
+    public void addLine(PickLine pickline) {
+        this.pickLines.add(pickline);
+        pickline.setOrderPick(this);
+    }
 
+    public void removeLine(PickLine pickLine) {
+        this.pickLines.remove(pickLine);
+        pickLine.setOrderPick(null);
     }
 }

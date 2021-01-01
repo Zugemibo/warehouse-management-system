@@ -18,14 +18,15 @@ public class AddressController {
     private SupplierService sService;
 
     @PostMapping("/customer/{customerId}")
-    public Customer addCustomerAddress(@RequestBody Address address, @PathVariable Long customerId){
+    public Customer addCustomerAddress(@RequestBody Address address, @PathVariable Long customerId) {
         Customer customer = cService.getCustomer(customerId);
         customer.setAddress(address);
         cService.save(customer);
         return customer;
     }
+
     @PostMapping("/supplier/{supplierId}")
-    public Supplier addSupplierAddress(@RequestBody Address address, @PathVariable Long supplierId){
+    public Supplier addSupplierAddress(@RequestBody Address address, @PathVariable Long supplierId) {
         Supplier supplier = sService.findSupplierById(supplierId);
         supplier.setAddress(address);
         sService.saveSupplier(supplier);

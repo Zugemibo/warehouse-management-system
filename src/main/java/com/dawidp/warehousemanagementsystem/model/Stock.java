@@ -2,7 +2,10 @@ package com.dawidp.warehousemanagementsystem.model;
 
 import com.dawidp.warehousemanagementsystem.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -36,17 +39,17 @@ public class Stock implements Serializable {
         this.stockId = stockId;
     }
 
-    public Stock(double stock,Product product, PaletteSpace space) {
+    public Stock(double stock, Product product, PaletteSpace space) {
         this.stockAvailable = stock;
         product.addStock(this);
         space.addStock(this);
     }
 
-    public void decreaseQuantity(Double quantity){
+    public void decreaseQuantity(Double quantity) {
         this.setStockAvailable(this.getStockAvailable() - quantity);
     }
 
-    public void increaseQuantity(Double quantity){
+    public void increaseQuantity(Double quantity) {
         this.setStockAvailable(this.getStockAvailable() + quantity);
     }
 }

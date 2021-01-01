@@ -1,101 +1,101 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import com.dawidp.warehousemanagementsystem.operations.OrderPick;
-import com.dawidp.warehousemanagementsystem.service.OrderPickService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.dawidp.warehousemanagementsystem.model.Order;
 import com.dawidp.warehousemanagementsystem.model.OrderLine;
 import com.dawidp.warehousemanagementsystem.model.Product;
-import com.dawidp.warehousemanagementsystem.service.OrderLineService;
-import com.dawidp.warehousemanagementsystem.service.OrderService;
-import com.dawidp.warehousemanagementsystem.service.ProductService;
+import com.dawidp.warehousemanagementsystem.model.Stock;
+import com.dawidp.warehousemanagementsystem.operations.OrderPick;
+import com.dawidp.warehousemanagementsystem.operations.PickLine;
+import com.dawidp.warehousemanagementsystem.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
 
-	@Autowired
-	private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
-	@Autowired
-	private OrderLineService orderLineService;
+    @Autowired
+    private OrderLineService orderLineService;
 
-	@Autowired
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@Autowired
-	private OrderPickService orderPickService;
+    @Autowired
+    private OrderPickService orderPickService;
 
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-	Date date = new Date(System.currentTimeMillis());
+    @Autowired
+    private StockService stockService;
 
-	@GetMapping("/order/{orderId}")
-	public Order getOrderById(@PathVariable("orderId") Long orderId) {
-		return orderService.getOrder(orderId);
-	}
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    Date date = new Date(System.currentTimeMillis());
 
-	@GetMapping("/orders")
-	public List<Order> getOrders() {
-		List<Order> orders = orderService.getAllOrders();
-		return orders;
-	}
+    @GetMapping("/order/{orderId}")
+    public Order getOrderById(@PathVariable("orderId") Long orderId) {
+        return orderService.getOrder(orderId);
+    }
 
-	@PostMapping("/order")
-	public Order addOrder() {
-		Order order = new Order();
-		return orderService.save(order);
-	}
+    @GetMapping("/orders")
+    public List<Order> getOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return orders;
+    }
 
-	@PostMapping("/order/{orderId}/lines")
-	public Order addToOrder(@PathVariable("orderId") Long orderId, @RequestBody OrderLine line) {
-		Order order = orderService.getOrder(orderId);
-		Product product = productService.getProductById(line.getProduct().getProductId());
-		order.addLine(line);
-		return orderService.save(order);
-	}
+    @PostMapping("/order")
+    public Order addOrder() {
+        Order order = new Order();
+        return orderService.save(order);
+    }
 
-	@DeleteMapping("/order/{orderId}/clear")
-	public Order deleteAllLines(@PathVariable("orderId") Long orderId) {
-		Order order = orderService.getOrder(orderId);
-		order.removeLines();
-		return orderService.save(order);
-	}
+    @PostMapping("/order/{orderId}/lines")
+    public Order addToOrder(@PathVariable("orderId") Long orderId, @RequestBody OrderLine line) {
+        Order order = orderService.getOrder(orderId);
+        Product product = productService.getProductById(line.getProduct().getProductId());
+        order.addLine(line);
+        return orderService.save(order);
+    }
 
-	@DeleteMapping("/order/{orderId}/lines/{id}")
-	public Order deleteFromOrder(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id) {
-		Order order = orderService.getOrder(orderId);
-		OrderLine line = orderLineService.getOrderLine(id);
-		order.removeLine(line);
-		return orderService.save(order);
-	}
+    @DeleteMapping("/order/{orderId}/clear")
+    public Order deleteAllLines(@PathVariable("orderId") Long orderId) {
+        Order order = orderService.getOrder(orderId);
+        order.removeLines();
+        return orderService.save(order);
+    }
 
-	@DeleteMapping("/order/{orderId}/cancel-order")
-	public void deleteOrderById(@PathVariable("orderId") Long orderId) {
-		orderService.deleteOrderById(orderId);
-	}
+    @DeleteMapping("/order/{orderId}/lines/{id}")
+    public Order deleteFromOrder(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id) {
+        Order order = orderService.getOrder(orderId);
+        OrderLine line = orderLineService.getOrderLine(id);
+        order.removeLine(line);
+        return orderService.save(order);
+    }
 
-//	@PostMapping("/moveToPick/{orderId}")
-//	public String moveOrderToOrderPick(@PathVariable("orderId") Long orderId){
-//		Order order = orderService.getOrder(orderId);
-//		OrderPick orderPick = new OrderPick(order);
-//		for(OrderLine orderLine:order.getLinesItems()){
-//
-//        }
-//
-//
-//		return null;
-//	}
+    @DeleteMapping("/order/{orderId}/cancel-order")
+    public void deleteOrderById(@PathVariable("orderId") Long orderId) {
+        orderService.deleteOrderById(orderId);
+    }
+
+    @PostMapping("/moveToPick/{orderId}")
+    public String moveOrderToOrderPick(@PathVariable("orderId") Long orderId) {
+        Order order = orderService.getOrder(orderId);
+        OrderPick orderPick = new OrderPick(order);
+        for (OrderLine orderLine : order.getLinesItems()) {
+            Stock stock = stockService.getStockWithSufficientQuantity(orderLine.getProduct().getProductBarcode(), orderLine.getQuantity());
+            PickLine pickLine = new PickLine(orderLine, stock);
+            stock.setStockAvailable(stock.getStockAvailable() - orderLine.getQuantity());
+            stock.setStockReserved(stock.getStockReserved() + orderLine.getQuantity());
+
+
+        }
+
+
+        return null;
+    }
 
 }

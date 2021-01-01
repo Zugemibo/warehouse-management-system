@@ -31,6 +31,7 @@ public class RegisterController {
         userService.createUser(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws InvalidCredentialsException {
         try {

@@ -31,12 +31,12 @@ public class User implements Serializable {
     @OneToMany
     private Set<OrderPick> userOrders = new HashSet<>();
 
-    public void addOrder(OrderPick orderPick){
+    public void addOrder(OrderPick orderPick) {
         userOrders.add(orderPick);
         orderPick.setUser(this);
     }
 
-    public void removeOrder(OrderPick orderPick){
+    public void removeOrder(OrderPick orderPick) {
         userOrders.remove(orderPick);
         orderPick.setUser(null);
     }

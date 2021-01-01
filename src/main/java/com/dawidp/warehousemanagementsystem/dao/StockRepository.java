@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.NamedNativeQuery;
 import java.util.List;
 
 @Repository
@@ -25,4 +24,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Query("Select s from Stock s where s.space.spaceBarcode like :space")
     List<Stock> getSpaceStocks(@Param("space") String spaceBarcode);
+
+    @Query("Select s from Stock s where s.product.productBarcode like :barcode and s.stockAvailable >= :quantity")
+    List<Stock> getStockWithSufficientQuantity(@Param("barcode") String barcode, @Param("quantity") double quantity);
 }

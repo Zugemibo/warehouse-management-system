@@ -1,7 +1,7 @@
 package com.dawidp.warehousemanagementsystem.service;
 
-import com.dawidp.warehousemanagementsystem.model.SupplyItem;
 import com.dawidp.warehousemanagementsystem.dao.SupplyItemRepository;
+import com.dawidp.warehousemanagementsystem.model.SupplyItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

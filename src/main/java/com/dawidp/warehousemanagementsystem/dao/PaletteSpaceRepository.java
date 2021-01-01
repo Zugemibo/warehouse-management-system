@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PaletteSpaceRepository extends JpaRepository<PaletteSpace, Long>{
+public interface PaletteSpaceRepository extends JpaRepository<PaletteSpace, Long> {
 
-	PaletteSpace getSinglePaletteSpaceBySpaceBarcode(String barcode);
-
+    PaletteSpace getSinglePaletteSpaceBySpaceBarcode(String barcode);
 
 
 }
