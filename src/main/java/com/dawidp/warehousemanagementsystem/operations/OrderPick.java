@@ -5,6 +5,7 @@ import com.dawidp.warehousemanagementsystem.model.OrderDeliveryType;
 import com.dawidp.warehousemanagementsystem.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,13 +23,18 @@ public class OrderPick implements Serializable {
     @OneToOne
     @JoinColumn(name = "order_number", referencedColumnName = "order_number")
     private Order order;
-    private String orderPickNo;
+    @NaturalId
+    private String documentNo;
     @Enumerated(EnumType.STRING)
     private OrderDeliveryType type;
     private int orderNumberOfItems;
     private String consignmentNoteNumber;
     private double percentageDone;
-    @OneToMany
+    @OneToMany(
+            mappedBy = "orderPick",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<PickLine> pickLines = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

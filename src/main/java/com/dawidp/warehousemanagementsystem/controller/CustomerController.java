@@ -5,21 +5,32 @@ import com.dawidp.warehousemanagementsystem.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customer/")
 public class CustomerController {
 
     @Autowired
-    CustomerService service;
+    private CustomerService customerService;
 
     @PostMapping("/createCustomer")
     public Customer createCustomer(@RequestBody Customer customer) {
-        return service.save(customer);
+        return customerService.save(customer);
+    }
+    @GetMapping("/getCustomerByNick/{nick}")
+    public Customer getCustomerByNick(@PathVariable String nick){
+        return customerService.getCustomerByNick(nick);
     }
 
-    @GetMapping("/getCustomer/{customerId}")
-    public Customer getCustomer(@PathVariable Long customerId) {
-        return service.getCustomer(customerId);
+    @GetMapping("/getAllCustomers")
+    public List<Customer> getAllCustomers(){
+        return customerService.getAllCustomers();
+    }
+
+    @GetMapping("/getCustomerById/{customerId}")
+    public Customer getCustomerById(@PathVariable Long customerId) {
+        return customerService.getCustomerById(customerId);
     }
 
 }

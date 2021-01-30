@@ -1,11 +1,13 @@
 package com.dawidp.warehousemanagementsystem.controller;
 
+import com.dawidp.warehousemanagementsystem.dto.PaletteSpaceDTO;
 import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
 import com.dawidp.warehousemanagementsystem.model.Stock;
 import com.dawidp.warehousemanagementsystem.service.PaletteSpaceService;
 import com.dawidp.warehousemanagementsystem.service.StockService;
 import com.dawidp.warehousemanagementsystem.view.Views;
 import com.fasterxml.jackson.annotation.JsonView;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ public class PaletteSpaceController {
     private PaletteSpaceService spaceService;
     @Autowired
     private StockService stockService;
+    @Autowired
+    private ModelMapper modelMapper;
 
 //	@PostMapping("/single/{name}")
 //	public PaletteSpace createSingleSpace(@PathVariable String name){
@@ -50,10 +54,9 @@ public class PaletteSpaceController {
         return spaceService.findAll();
     }
 
-    @JsonView(Views.Stock.class)
     @GetMapping("/getPaletteSpaceByBarcode/{barcode}")
-    public PaletteSpace getPaletteSpaceByBarcode(@PathVariable String barcode) {
-        return spaceService.getPaletteSpaceByBarcode(barcode);
+    public PaletteSpaceDTO getPaletteSpaceByBarcode(@PathVariable String barcode) {
+        return convertToDto(spaceService.getPaletteSpaceByBarcode(barcode));
     }
 
     @GetMapping("/getPaletteSpaces")
@@ -65,5 +68,15 @@ public class PaletteSpaceController {
     @GetMapping("/{spaceBarcode}/getStocks")
     public List<Stock> getSpaceStocks(@PathVariable String spaceBarcode) {
         return stockService.getSpaceStocks(spaceBarcode);
+    }
+//                          HELPER CLASSES
+    private PaletteSpaceDTO convertToDto(PaletteSpace paletteSpace) {
+        PaletteSpaceDTO productDTO = modelMapper.map(paletteSpace, PaletteSpaceDTO.class);
+        return productDTO;
+    }
+
+    private PaletteSpace convertToEntity(PaletteSpaceDTO productDTO) {
+        PaletteSpace product = modelMapper.map(productDTO, PaletteSpace.class);
+        return product;
     }
 }

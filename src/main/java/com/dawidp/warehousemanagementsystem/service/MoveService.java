@@ -1,5 +1,6 @@
 package com.dawidp.warehousemanagementsystem.service;
 
+import com.dawidp.warehousemanagementsystem.dao.StockRepository;
 import com.dawidp.warehousemanagementsystem.model.PaletteSpace;
 import com.dawidp.warehousemanagementsystem.model.Product;
 import com.dawidp.warehousemanagementsystem.model.Stock;
@@ -18,6 +19,8 @@ public class MoveService {
     private ProductService productService;
     @Autowired
     private PaletteSpaceService spaceService;
+    @Autowired
+    private StockRepository stockRepository;
 
 //    public String moveOneProduct(ProductMovement movement) {
 //        Stock stockFrom = stockService.getStock(movement.getSpaceFrom(), movement.getProductBarcode());
@@ -47,12 +50,12 @@ public class MoveService {
 
     public String moveOneProduct(ProductMovement movement) {
 
-        Stock stockFrom = stockService.getStock(movement.getSpaceFrom(), movement.getProductBarcode());
+        Stock stockFrom = stockRepository.getStockBySpaceBarcodeAndProductBarcode(movement.getSpaceFrom(), movement.getProductBarcode());
         if (movement.getQuantity() <= stockFrom.getStockAvailable()) {
             stockFrom.decreaseQuantity(movement.getQuantity());
             Product product = productService.getProductByCode(movement.getProductBarcode());
             PaletteSpace spaceWhere = spaceService.getPaletteSpaceByBarcode(movement.getSpaceWhere());
-            Stock stockIfExist = stockService.getStock(spaceWhere.getSpaceBarcode(), product.getProductBarcode());
+            Stock stockIfExist = stockRepository.getStockBySpaceBarcodeAndProductBarcode(spaceWhere.getSpaceBarcode(), product.getProductBarcode());
             if (stockFrom.getStockAvailable() == 0) {
                 stockService.deleteStockById(stockFrom.getStockId());
             } else {

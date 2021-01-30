@@ -35,8 +35,8 @@ public class Product implements Serializable {
     private String name;
     @ManyToOne
     @JoinColumn(name = "category_name", referencedColumnName = "category_name")
-    @EqualsAndHashCode.Exclude
-    @JsonView(Views.Product.class)
+//    @EqualsAndHashCode.Exclude
+//    @JsonView(Views.Product.class)
     private Category category;
     @EqualsAndHashCode.Exclude
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)

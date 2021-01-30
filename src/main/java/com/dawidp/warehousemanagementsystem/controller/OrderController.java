@@ -33,6 +33,9 @@ public class OrderController {
     @Autowired
     private StockService stockService;
 
+    @Autowired
+    private PickLineService pickLineService;
+
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     Date date = new Date(System.currentTimeMillis());
 
@@ -50,6 +53,10 @@ public class OrderController {
     @PostMapping("/order")
     public Order addOrder() {
         Order order = new Order();
+        return orderService.save(order);
+    }
+    @PostMapping("/addFromShop")
+    public Order addOrder(@RequestBody Order order) {
         return orderService.save(order);
     }
 
@@ -82,7 +89,7 @@ public class OrderController {
     }
 
     @PostMapping("/moveToPick/{orderId}")
-    public String moveOrderToOrderPick(@PathVariable("orderId") Long orderId) {
+    public void moveOrderToOrderPick(@PathVariable("orderId") Long orderId) {
         Order order = orderService.getOrder(orderId);
         OrderPick orderPick = new OrderPick(order);
         for (OrderLine orderLine : order.getLinesItems()) {
@@ -90,12 +97,10 @@ public class OrderController {
             PickLine pickLine = new PickLine(orderLine, stock);
             stock.setStockAvailable(stock.getStockAvailable() - orderLine.getQuantity());
             stock.setStockReserved(stock.getStockReserved() + orderLine.getQuantity());
-
-
+//            pickLineService.save(pickLine);
+            orderPick.addLine(pickLine);
+            orderPickService.save(orderPick);
         }
-
-
-        return null;
     }
 
 }

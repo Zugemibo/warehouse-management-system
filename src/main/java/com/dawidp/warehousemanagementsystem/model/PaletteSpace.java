@@ -28,7 +28,6 @@ public class PaletteSpace implements Serializable {
     private int alley;
     private int rack;
     private int place;
-    @NotNull
     @Column(name = "space_barcode")
     @NaturalId
     @JsonView(Views.Stock.class)

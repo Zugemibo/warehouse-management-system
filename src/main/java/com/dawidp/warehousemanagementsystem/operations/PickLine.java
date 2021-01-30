@@ -19,8 +19,7 @@ public class PickLine implements Serializable {
     private OrderLine orderLine;
     @OneToOne
     private Stock stock;
-    @ManyToOne
-    @JoinColumn(name = "order_number", referencedColumnName = "order_number")
+    @ManyToOne(fetch = FetchType.LAZY)
     private OrderPick orderPick;
     @Enumerated
     private LineStatus lineStatus;

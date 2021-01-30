@@ -28,7 +28,11 @@ public class User implements Serializable {
     private UserRole role;
     @Column(name = "user_firstname")
     private String userFirstName;
-    @OneToMany
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<OrderPick> userOrders = new HashSet<>();
 
     public void addOrder(OrderPick orderPick) {

@@ -13,23 +13,23 @@ import org.springframework.web.bind.annotation.*;
 public class AddressController {
 
     @Autowired
-    private CustomerService cService;
+    private CustomerService customerService;
     @Autowired
-    private SupplierService sService;
+    private SupplierService supplierService;
 
     @PostMapping("/customer/{customerId}")
     public Customer addCustomerAddress(@RequestBody Address address, @PathVariable Long customerId) {
-        Customer customer = cService.getCustomer(customerId);
+        Customer customer = customerService.getCustomerById(customerId);
         customer.setAddress(address);
-        cService.save(customer);
+        customerService.save(customer);
         return customer;
     }
 
     @PostMapping("/supplier/{supplierId}")
     public Supplier addSupplierAddress(@RequestBody Address address, @PathVariable Long supplierId) {
-        Supplier supplier = sService.findSupplierById(supplierId);
+        Supplier supplier = supplierService.findSupplierById(supplierId);
         supplier.setAddress(address);
-        sService.saveSupplier(supplier);
+        supplierService.saveSupplier(supplier);
         return supplier;
     }
 }
