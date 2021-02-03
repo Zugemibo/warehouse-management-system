@@ -16,12 +16,19 @@ public class OrderLine implements Serializable {
     @Column(name = "line_id", nullable = false)
     private Long orderLineId;
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product", referencedColumnName = "product_barcode")
     private Product product;
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
     private double quantity;
+
+    public OrderLine(Product product, Order order, double quantity){
+        this.product = product;
+        this.order = order;
+        this.quantity = quantity;
+    }
+
     @Transient
     private double totalPrice;
 

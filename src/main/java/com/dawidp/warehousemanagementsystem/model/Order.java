@@ -29,11 +29,12 @@ public class Order implements Serializable {
     private String orderDate;
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private OrderPick pick;
+    private OrderStatus status;
 
     private double total;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.REFRESH)
-    private List<OrderLine> linesItems = new ArrayList<OrderLine>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderLine> linesItems = new ArrayList<>();
 
     public Order addLine(OrderLine line) {
         linesItems.add(line);

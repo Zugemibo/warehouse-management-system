@@ -28,7 +28,7 @@ public class MoveController {
         return moveService.moveOneProduct(movement);
     }
 
-    @GetMapping("/getStock/{spaceWhere}/{product}")//helper
+    @GetMapping("/getStock/{spaceWhere}/{product}")//helper method
     public Stock getStock(@PathVariable String spaceWhere, @PathVariable String product) {
         Stock stock = stockService.getStock(spaceWhere, product);
         return stock;

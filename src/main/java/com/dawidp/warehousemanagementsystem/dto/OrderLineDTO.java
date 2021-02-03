@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class OrderLineDTO {
 
-    private String productName;
-    private String orderNumber;
+    private String productBarcode;
     private double quantity;
 }

@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 public class OrderLineService {
 
     @Autowired
-    LineRepository repository;
+    private LineRepository repository;
 
     public OrderLine getOrderLine(Long id) {
         return repository.findOrderLineByOrderLineId(id);
     }
 
+    public OrderLine save(OrderLine orderLine) {
+        return repository.save(orderLine);
+    }
 }

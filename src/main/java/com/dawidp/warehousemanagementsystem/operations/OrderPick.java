@@ -5,6 +5,7 @@ import com.dawidp.warehousemanagementsystem.model.OrderDeliveryType;
 import com.dawidp.warehousemanagementsystem.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class OrderPick implements Serializable {
 
     @Id

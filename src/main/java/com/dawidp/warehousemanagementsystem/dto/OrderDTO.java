@@ -8,9 +8,12 @@ import java.util.List;
 @Data
 public class OrderDTO {
 
-    private String customerNick;
+    private Long orderId;
     private String orderNumber;
+    private String customerId;
     private String orderDate;
-    private List<OrderLineDTO> linesItems = new ArrayList<OrderLineDTO>();
+    private String status;
+    private String username;
+    private List<OrderLineDTO> linesItems = new ArrayList<>();
 
 }

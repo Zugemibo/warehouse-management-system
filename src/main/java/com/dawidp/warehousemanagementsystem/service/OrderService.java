@@ -11,7 +11,7 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    OrderRepository repository;
+    private OrderRepository repository;
 
     public Order save(Order order) {
         return repository.save(order);

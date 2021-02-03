@@ -1,15 +1,13 @@
 package com.dawidp.warehousemanagementsystem.model;
 
 public enum OrderStatus {
-    AWAYTING_PAYMENT,
-    AWAYTING_SHIPMENT,
-
+    ORDERED,
+    AWAYTING,
     READY_TO_PICK,
     PICKED,
     PACKED,
     COMPLETED,
     SHIPPED,
-
     CANCELLED,
     DECLINED,
     REFUNDED
